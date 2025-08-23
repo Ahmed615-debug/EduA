@@ -196,8 +196,8 @@
         <label class="block mb-2">المرحله الدراسية</label>
         <select required id="grade" class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
           <option value="">اختر المرحلة الدراسية</option>
-          <option>المرحله الاعداديه</option>
-          <option>المرحله الثانويه</option>
+          <option value="preparatory">المرحله الاعداديه</option>
+          <option value="secondary">المرحله الثانويه</option>
         </select>
         <span id="gradeError" class="error-text"></span>
       </div>
@@ -259,6 +259,7 @@
     const strengthText = document.getElementById('strengthText');
     const togglePassword = document.getElementById('togglePassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');
+    const gradeSelect = document.getElementById('grade');
 
     // مصفوفة لحقول الإدخال
     const inputFields = document.querySelectorAll('.inputField');
@@ -495,6 +496,7 @@
         governorate: document.getElementById('governorate').value,
         educationType: document.getElementById('educationType').value,
         grade: document.getElementById('grade').value,
+        educationLevel: document.getElementById('grade').value, // حفظ المرحلة الدراسية
         email: document.getElementById('email').value,
         password: btoa(document.getElementById('password').value), // تشفير كلمة المرور
         createdAt: new Date().toISOString()
@@ -535,6 +537,7 @@
         fullName: userData.fullName,
         email: userData.email,
         profileImage: userData.profileImage || '',
+        educationLevel: userData.educationLevel, // حفظ المرحلة الدراسية
         isLoggedIn: true
       };
       localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -542,9 +545,18 @@
       // إظهار رسالة النجاح
       showToast("✅ تم إنشاء الحساب بنجاح!");
       
-      // توجيه المستخدم إلى الصفحة الرئيسية بعد التسجيل الناجح
+      // تحديد الصفحة المناسبة للتحويل حسب المرحلة الدراسية
+      let redirectPage = "login.html"; // الصفحة الافتراضية
+      
+      if (userData.educationLevel === "preparatory") {
+        redirectPage = "Prep.html"; // صفحة المرحلة الإعدادية
+      } else if (userData.educationLevel === "secondary") {
+        redirectPage = "Secondary.html"; // صفحة المرحلة الثانوية
+      }
+      
+      // توجيه المستخدم إلى الصفحة المناسبة بعد التسجيل الناجح
       setTimeout(() => {
-        window.location.href = "login.html"; // تم التصحيح من login.html إلى index.html
+        window.location.href = redirectPage;
       }, 1500);
     }
 
