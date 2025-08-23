@@ -307,7 +307,7 @@
       if (!passwordInput.value.trim()) {
         passwordInput.classList.add("error");
         valid = false;
-      } else {
+        } else {
         passwordInput.classList.remove("error");
       }
       
@@ -340,11 +340,21 @@
           email: user.email,
           phone: user.phone,
           profileImage: user.profileImage || '',
+          educationLevel: user.educationLevel, // إضافة المرحلة الدراسية
           isLoggedIn: true
         };
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
         
-        setTimeout(() => { window.location.href = "home.html"; }, 1500);
+        // تحديد الصفحة المناسبة للتحويل حسب المرحلة الدراسية
+        let redirectPage = "home.html"; // الصفحة الافتراضية
+        
+        if (user.educationLevel === "preparatory") {
+          redirectPage = "Prep.html"; // صفحة المرحلة الإعدادية
+        } else if (user.educationLevel === "secondary") {
+          redirectPage = "Secondary.html"; // صفحة المرحلة الثانوية
+        }
+        
+        setTimeout(() => { window.location.href = redirectPage; }, 1500);
       } else {
         showToast("❌ بيانات الدخول غير صحيحة", "bg-red-500 text-white");
       }
