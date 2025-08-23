@@ -6,28 +6,36 @@
   <title>إنشاء حساب</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(#9333ea 70%, #6366f1 100%);
-    }
 
+  <style>
+   body {
+      background: linear-gradient(#9333ea 70%, #6366f1 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
     .glass {
-      background: rgba(255, 255, 255);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(15px);
       border: 1px solid rgba(0, 0, 0, 0.1);
     }
-
     input:focus, select:focus {
       transform: scale(1.02);
       transition: 0.25s ease;
       box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
     }
-
     .error {
       border-color: red !important;
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
     }
-
+    .error-text {
+      color: red;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: block;
+    }
     .toast {
       position: fixed;
       top: 20px;
@@ -40,53 +48,94 @@
       font-size: 16px;
       opacity: 0;
       transform: translateY(-20px);
-      transition: all 0.5s ease;
-      z-index: 999;
+      transition: all 0.3s ease;
+      z-index: 1000;
     }
-    .toast.show {opacity:1; transform:translateY(0);}
-    .toast.hide {opacity:0; transform:translateY(-20px);}
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .password-strength {
+      height: 5px;
+      border-radius: 3px;
+      margin-top: 5px;
+      transition: all 0.3s ease;
+    }
+    .profile-placeholder {
+      background: linear-gradient(45deg, #9333ea, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+    }
   </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body>
 
-  <div class="glass shadow-2xl rounded-3xl p-10 w-full max-w-5xl text-gray-800">
+  <div class="glass shadow-2xl rounded-3xl p-6 md:p-10 w-full max-w-5xl text-gray-800">
     
     <!-- Logo -->
     <div class="flex justify-center mb-6">
       <img src="https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png" 
-           alt="Logo" class="h-24">
+           alt="Logo" class="h-20 md:h-24">
     </div>
 
     <!-- Title -->
-    <h2 class="text-4xl font-extrabold text-center mb-10">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-6">
       ✨ إنشاء حساب جديد ✨
     </h2>
 
+    <!-- Progress -->
+    <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+      <div id="progressBar" class="bg-purple-600 h-3 rounded-full transition-all duration-300" style="width:0%"></div>
+    </div>
+
     <!-- Form -->
-    <form id="signupForm" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+    <form id="signupForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
+      
+      <!-- Profile Image -->
+      <div class="col-span-2 text-center mb-4">
+        <label class="cursor-pointer inline-block">
+          <input type="file" id="profilePicInput" class="hidden" accept="image/*">
+          <div id="profilePreview" class="w-24 h-24 md:w-28 md:h-28 rounded-full mx-auto mb-2 object-cover border-4 border-purple-500 profile-placeholder">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <p class="text-sm text-gray-500">اختر صورة بروفايل</p>
+          <span id="profileError" class="error-text"></span>
+        </label>
+      </div>
+
+      <!-- Full Name -->
       <div class="relative w-full">
         <label class="block mb-2">الاسم الرباعي</label>
-        <input type="text" id="fullname" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل الاسم الكامل">
+        <input type="text" id="fullName" required minlength="6" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل الاسم الكامل">
         <i class="fa-solid fa-user absolute left-3 top-[44px] text-gray-400"></i>
+        <span id="fullNameError" class="error-text"></span>
       </div>
 
+      <!-- Phone -->
       <div class="relative w-full">
         <label class="block mb-2">رقم التليفون</label>
-        <input type="tel" id="phone" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم التليفون">
+        <input type="tel" id="phone" required pattern="^01[0-2,5]{1}[0-9]{8}$" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم التليفون">
         <i class="fa-solid fa-phone absolute left-3 top-[44px] text-gray-400"></i>
+        <span id="phoneError" class="error-text"></span>
       </div>
 
+      <!-- Parent phone -->
       <div class="relative w-full">
         <label class="block mb-2">رقم ولي الأمر</label>
-        <input type="tel" id="parentPhone" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم ولي الأمر">
+        <input type="tel" id="parentPhone" required pattern="^01[0-2,5]{1}[0-9]{8}$" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم ولي الأمر">
         <i class="fa-solid fa-phone-volume absolute left-3 top-[44px] text-gray-400"></i>
+        <span id="parentPhoneError" class="error-text"></span>
       </div>
 
+      <!-- Governorate -->
       <div class="relative w-full">
         <label class="block mb-2">المحافظة</label>
-        <select id="gov" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
+        <select id="governorate" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
           <option value="">اختر المحافظة</option>
-          <option>القاهرة</option>
+                   <option>القاهرة</option>
           <option>الجيزة</option>
           <option>الإسكندرية</option>
           <option>الدقهلية</option>
@@ -114,11 +163,13 @@
           <option>مطروح</option>
           <option>البحر الأحمر</option>
         </select>
+        <span id="governorateError" class="error-text"></span>
       </div>
 
+      <!-- Education type -->
       <div class="relative w-full">
         <label class="block mb-2">نوع التعليم</label>
-        <select id="eduType" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
+        <select id="educationType" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
           <option value="">اختر النوع</option>
           <option>عام</option>
           <option>أزهري</option>
@@ -127,97 +178,383 @@
           <option>لغات</option>
           <option>دولي</option>
         </select>
+        <span id="educationTypeError" class="error-text"></span>
+      </div>
+
+      <!-- Grade -->
+      <div class="relative w-full">
+        <label class="block mb-2">المرحله الدراسية</label>
+        <select required id="grade" class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
+          <option value="">اختر المرحلة الدراسية</option>
+          <option>المرحله الاعداديه</option>
+          <option>المرحله الثانويه</option>
+        </select>
+        <span id="gradeError" class="error-text"></span>
       </div>
 
       <div class="relative w-full">
-        <label class="block mb-2">السنة الدراسية</label>
-        <select id="grade" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
-          <option value="">اختر السنة</option>
-          <option>أولى ثانوي</option>
-          <option>ثانية ثانوي</option>
-          <option>ثالثة ثانوي</option>
-        </select>
+        <label class="block mb-2">البريد الإلكتروني</label>
+        <input type="email" id="email" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل البريد الإلكتروني">
+        <i class="fa-solid fa-envelope absolute left-3 top-[44px] text-gray-400"></i>
+        <span id="emailError" class="error-text"></span>
       </div>
 
+      <!-- Password -->
       <div class="relative w-full">
         <label class="block mb-2">كلمة المرور</label>
-        <input type="password" id="password" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل كلمة المرور">
-        <i class="fa-solid fa-lock absolute left-3 top-[44px] text-gray-400"></i>
+        <input type="password" id="password" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3 pr-10" placeholder="أدخل كلمة المرور">
+        <i id="togglePassword" class="fa-solid fa-eye absolute left-3 top-[44px] text-gray-400 cursor-pointer"></i>
+        <div class="flex items-center mt-2">
+          <div id="passwordStrength" class="password-strength w-full mr-2"></div>
+          <span id="strengthText" class="text-xs"></span>
+        </div>
+        <span id="passwordError" class="error-text"></span>
       </div>
 
+      <!-- Confirm Password -->
       <div class="relative w-full">
         <label class="block mb-2">تأكيد كلمة المرور</label>
         <input type="password" id="confirmPassword" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أعد إدخال كلمة المرور">
         <i class="fa-solid fa-lock-keyhole absolute left-3 top-[44px] text-gray-400"></i>
+        <span id="confirmPasswordError" class="error-text"></span>
       </div>
     </form>
 
-    <div class="mt-10 text-center">
-      <button id="submitBtn" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-4 rounded-2xl text-lg font-bold shadow-xl transition duration-300 transform hover:-translate-y-1 hover:scale-105">
+    <!-- Submit -->
+    <div class="mt-8 text-center">
+      <button id="submitBtn" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-3 md:px-10 md:py-4 rounded-2xl text-lg font-bold shadow-xl transition duration-300 transform hover:-translate-y-1 hover:scale-105">
         🚀 إنشاء الحساب
       </button>
+      <p class="mt-4 text-gray-600">
+        لديك حساب بالفعل؟ 
+        <a href="login.html" class="text-purple-600 font-semibold hover:underline">سجل الدخول هنا</a>
+      </p>
     </div>
   </div>
 
+  <!-- Toast -->
   <div id="toast" class="toast hidden"></div>
 
+  <!-- JavaScript -->
   <script>
+    // عناصر DOM
+    const profilePicInput = document.getElementById('profilePicInput');
+    const profilePreview = document.getElementById('profilePreview');
+    const progressBar = document.getElementById('progressBar');
+    const signupForm = document.getElementById('signupForm');
     const submitBtn = document.getElementById('submitBtn');
     const toast = document.getElementById('toast');
-    const inputs = document.querySelectorAll('.inputField');
+    const passwordInput = document.getElementById('password');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const strengthText = document.getElementById('strengthText');
+    const togglePassword = document.getElementById('togglePassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
 
-    function showToast(msg, color="bg-green-500 text-white") {
+    // مصفوفة لحقول الإدخال
+    const inputFields = document.querySelectorAll('.inputField');
+    
+    // معاينة صورة البروفايل
+    profilePicInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        // التحقق من حجم الصورة (2MB كحد أقصى)
+        if (file.size > 2 * 1024 * 1024) {
+          showToast('⚠ حجم الصورة يجب أن يكون أقل من 2MB', 'bg-red-500 text-white');
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profilePreview.innerHTML = '';
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          img.className = 'w-full h-full rounded-full object-cover';
+          profilePreview.appendChild(img);
+          document.getElementById('profileError').textContent = '';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // إظهار/إخفاء كلمة المرور
+    togglePassword.addEventListener('click', function() {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        togglePassword.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        togglePassword.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    });
+
+    // قوة كلمة المرور
+    passwordInput.addEventListener('input', function() {
+      const value = passwordInput.value;
+      let strength = 0;
+      let message = '';
+      let color = '';
+
+      if (value.length > 0) {
+        // حساب قوة كلمة المرور
+        if (value.length < 6) {
+          strength = 20;
+          message = 'ضعيفة جداً';
+          color = 'bg-red-500';
+        } else if (value.length < 8) {
+          strength = 40;
+          message = 'ضعيفة';
+          color = 'bg-red-400';
+        } else if (value.length < 10) {
+          strength = 60;
+          message = 'متوسطة';
+          color = 'bg-yellow-500';
+        } else if (value.length < 12) {
+          strength = 80;
+          message = 'قوية';
+          color = 'bg-green-500';
+        } else {
+          strength = 100;
+          message = 'قوية جداً';
+          color = 'bg-green-600';
+        }
+
+        // التحقق من وجود أحرف خاصة وأرقام
+        if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value)) strength += 10;
+        if (/\d/.test(value)) strength += 10;
+        
+        strength = Math.min(strength, 100);
+      }
+
+      // تحديث واجهة قوة كلمة المرور
+      passwordStrength.style.width = strength + '%';
+      passwordStrength.className = `password-strength ${color}`;
+      strengthText.textContent = message;
+      strengthText.className = `text-xs ${color.replace('bg-', 'text-')}`;
+      
+      // مسح رسالة الخطأ إذا كانت كلمة المرور صالحة
+      if (strength >= 60) {
+        document.getElementById('passwordError').textContent = '';
+      }
+    });
+
+    // التحقق من تطابق كلمتي المرور
+    confirmPasswordInput.addEventListener('input', function() {
+      if (confirmPasswordInput.value !== passwordInput.value) {
+        confirmPasswordInput.classList.add('error');
+        document.getElementById('confirmPasswordError').textContent = 'كلمتا المرور غير متطابقتين';
+      } else {
+        confirmPasswordInput.classList.remove('error');
+        document.getElementById('confirmPasswordError').textContent = '';
+      }
+    });
+
+    // إظهار رسائل Toast
+    function showToast(msg, colorClass = "bg-green-500 text-white") {
       toast.textContent = msg;
-      toast.className = `toast show ${color}`;
-      setTimeout(()=> toast.className = `toast hide ${color}`, 3000);
+      toast.className = `toast ${colorClass} show`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 3000);
     }
 
-    submitBtn.addEventListener('click', function(e){
+    // التحقق من صحة الحقول
+    function validateField(field, errorElement) {
+      let isValid = true;
+      let errorMessage = '';
+      
+      // التحقق من الحقول الفارغة
+      if (!field.value.trim()) {
+        errorMessage = 'هذا الحقل مطلوب';
+        isValid = false;
+      } 
+      // التحقق من صيغة البريد الإلكتروني
+      else if (field.type === 'email' && !isValidEmail(field.value)) {
+        errorMessage = 'صيغة البريد الإلكتروني غير صحيحة';
+        isValid = false;
+      }
+      // التحقق من صيغة رقم الهاتف
+      else if (field.type === 'tel' && !isValidPhone(field.value)) {
+        errorMessage = 'رقم الهاتف يجب أن يبدأ بـ 01 ويتكون من 11 رقماً';
+        isValid = false;
+      }
+      // التحقق من select
+      else if (field.tagName.toLowerCase() === 'select' && !field.value) {
+        errorMessage = 'يجب اختيار قيمة';
+        isValid = false;
+      }
+      // التحقق من كلمة المرور
+      else if (field.id === 'password' && field.value.length < 6) {
+        errorMessage = 'كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل';
+        isValid = false;
+      }
+      
+      // عرض رسالة الخطأ أو إخفاؤها
+      errorElement.textContent = errorMessage;
+      if (errorMessage) {
+        field.classList.add('error');
+      } else {
+        field.classList.remove('error');
+      }
+      
+      return isValid;
+    }
+
+    // التحقق من صحة البريد الإلكتروني
+    function isValidEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    // التحقق من صحة رقم الهاتف المصري
+    function isValidPhone(phone) {
+      const re = /^01[0-2,5]{1}[0-9]{8}$/;
+      return re.test(phone);
+    }
+
+    // التحقق من جميع الحقول قبل الإرسال
+    function validateForm() {
+      let isValid = true;
+      
+      // التحقق من جميع الحقول الإلزامية
+      isValid = validateField(document.getElementById('fullName'), document.getElementById('fullNameError')) && isValid;
+      isValid = validateField(document.getElementById('phone'), document.getElementById('phoneError')) && isValid;
+      isValid = validateField(document.getElementById('parentPhone'), document.getElementById('parentPhoneError')) && isValid;
+      isValid = validateField(document.getElementById('governorate'), document.getElementById('governorateError')) && isValid;
+      isValid = validateField(document.getElementById('educationType'), document.getElementById('educationTypeError')) && isValid;
+      isValid = validateField(document.getElementById('grade'), document.getElementById('gradeError')) && isValid
+      isValid = validateField(document.getElementById('email'), document.getElementById('emailError')) && isValid;
+      isValid = validateField(document.getElementById('password'), document.getElementById('passwordError')) && isValid;
+
+      // التحقق من تطابق كلمتي المرور
+      if (passwordInput.value !== confirmPasswordInput.value) {
+        document.getElementById('confirmPasswordError').textContent = 'كلمتا المرور غير متطابقتين';
+        confirmPasswordInput.classList.add('error');
+        isValid = false;
+      } else {
+        document.getElementById('confirmPasswordError').textContent = '';
+        confirmPasswordInput.classList.remove('error');
+      }
+      
+      // التحقق من عدم وجود حساب بنفس البريد الإلكتروني أو رقم الهاتف
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+      if (users.some(user => user.email === email)) {
+        document.getElementById('emailError').textContent = 'هذا البريد الإلكتروني مسجل بالفعل';
+        document.getElementById('email').classList.add('error');
+        isValid = false;
+      }
+
+      if (users.some(user => user.phone === phone)) {
+        document.getElementById('phoneError').textContent = 'هذا رقم الهاتف مسجل بالفعل';
+        document.getElementById('phone').classList.add('error');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // إرسال نموذج التسجيل
+    submitBtn.addEventListener('click', function(e) {
       e.preventDefault();
-      let valid = true;
-
-      inputs.forEach(input=>{
-        if(!input.value.trim()){
-          input.classList.add("error");
-          valid = false;
-        } else {
-          input.classList.remove("error");
-        }
-      });
-
-      if(!valid){
-        showToast("⚠ يرجى ملء جميع الحقول", "bg-red-500 text-white");
+      
+      // التحقق من صحة البيانات
+      if (!validateForm()) {
+        showToast('⚠ يرجى تصحيح الأخطاء في النموذج', 'bg-red-500 text-white');
         return;
       }
-
-      const fullname = document.getElementById('fullname').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const parentPhone = document.getElementById('parentPhone').value.trim();
-      const gov = document.getElementById('gov').value;
-      const eduType = document.getElementById('eduType').value;
-      const grade = document.getElementById('grade').value;
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      if(password !== confirmPassword){
-        showToast("❌ كلمة المرور غير متطابقة!", "bg-red-500 text-white");
-        return;
+      
+      // جمع البيانات من النموذج
+      const userData = {
+        id: Date.now(), // معرف فريد للمستخدم
+        fullName: document.getElementById('fullName').value,
+        phone: document.getElementById('phone').value,
+        parentPhone: document.getElementById('parentPhone').value,
+        governorate: document.getElementById('governorate').value,
+        educationType: document.getElementById('educationType').value,
+        grade: document.getElementById('grade').value,
+        email: document.getElementById('email').value,
+        password: btoa(document.getElementById('password').value), // تشفير كلمة المرور
+        createdAt: new Date().toISOString()
+      };
+      
+      // حفظ صورة الملف الشخصي إذا تم تحميلها
+      const profileImage = profilePicInput.files[0];
+      if (profileImage) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          userData.profileImage = e.target.result;
+          completeRegistration(userData);
+        };
+        reader.readAsDataURL(profileImage);
+      } else {
+        completeRegistration(userData);
       }
+    });
 
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-
-      if(users.some(u => u.phone === phone)){
-        showToast("❌ هذا الرقم مسجل بالفعل", "bg-red-500 text-white");
-        return;
-      }
-
-      users.push({fullname, phone, parentPhone, gov, eduType, grade, password});
-      localStorage.setItem("users", JSON.stringify(users));
-
+    // إكمال عملية التسجيل
+    function completeRegistration(userData) {
+      // إظهار حالة التحميل
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '⏳ جاري إنشاء الحساب...';
+      
+      // الحصول على المستخدمين الحاليين من Local Storage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      
+      // إضافة المستخدم الجديد
+      users.push(userData);
+      
+      // حفظ البيانات في Local Storage
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      // حفظ بيانات المستخدم الحالي في جلسة منفصلة
+      const currentUser = {
+        id: userData.id,
+        fullName: userData.fullName,
+        email: userData.email,
+        profileImage: userData.profileImage || '',
+        isLoggedIn: true
+      };
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      
+      // إظهار رسالة النجاح
       showToast("✅ تم إنشاء الحساب بنجاح!");
-      setTimeout(()=> {
+      
+      // توجيه المستخدم إلى الصفحة الرئيسية بعد التسجيل الناجح
+      setTimeout(() => {
         window.location.href = "login.html";
       }, 1500);
+    }
+
+    // إضافة مستمعي الأحداث للتحقق أثناء الكتابة
+    inputFields.forEach(field => {
+      field.addEventListener('input', function() {
+        const errorElement = document.getElementById(field.id + 'Error');
+        if (errorElement) {
+          validateField(field, errorElement);
+        }
+      });
+      
+      field.addEventListener('blur', function() {
+        const errorElement = document.getElementById(field.id + 'Error');
+        if (errorElement) {
+          validateField(field, errorElement);
+        }
+      });
+    });
+
+    // تحديث شريط التقدم بناءً على عدد الحقول المملوءة
+    function updateProgressBar() {
+      const filledFields = Array.from(inputFields).filter(field => field.value.trim() !== '').length;
+      const progress = (filledFields / inputFields.length) * 100;
+      progressBar.style.width = progress + '%';
+    }
+
+    // استمع لتغيرات الحقول لتحديث شريط التقدم
+    inputFields.forEach(field => {
+      field.addEventListener('input', updateProgressBar);
     });
   </script>
 </body>
