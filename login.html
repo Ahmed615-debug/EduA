@@ -182,21 +182,21 @@
     function showToast(msg, color="bg-green-500 text-white") {
       toast.textContent = msg;
       toast.className = `toast show ${color}`;
-      setTimeout(()=> toast.className = `toast hide ${color}`, 3000);
+      setTimeout(() => toast.className = `toast hide ${color}`, 3000);
     }
 
-    loginBtn.addEventListener('click', function(e){
+    loginBtn.addEventListener('click', function(e) {
       e.preventDefault();
       let valid = true;
-      inputs.forEach(input=>{
-        if(!input.value.trim()){
+      inputs.forEach(input => {
+        if (!input.value.trim()) {
           input.classList.add("error");
           valid = false;
         } else {
           input.classList.remove("error");
         }
       });
-      if(!valid){
+      if (!valid) {
         showToast("⚠ يرجى ملء جميع الحقول", "bg-red-500 text-white");
         return;
       }
@@ -205,11 +205,11 @@
       const password = document.getElementById('password').value;
 
       let users = JSON.parse(localStorage.getItem("users")) || [];
-      const user = users.find(u => u.phone === phone && u.password === password);
+      const user = users.find(u => u.phone === phone && atob(u.password) === password); // فك تشفير كلمة المرور
 
-      if(user){
+      if (user) {
         showToast("✅ تم تسجيل الدخول بنجاح!");
-        setTimeout(()=> { window.location.href = "home.html"; }, 1500);
+        setTimeout(() => { window.location.href = "home.html"; }, 1500);
       } else {
         showToast("❌ رقم الهاتف أو كلمة المرور غير صحيحة", "bg-red-500 text-white");
       }
@@ -223,16 +223,24 @@
     const useSMS     = document.getElementById('useSMS');
     const resetInput = document.getElementById('resetInput');
 
-    function openForgot(){ forgotModal.classList.add('show'); document.body.style.overflow='hidden'; }
-    function closeForgot(){ forgotModal.classList.remove('show'); document.body.style.overflow=''; }
+    function openForgot() { 
+      forgotModal.classList.add('show'); 
+      document.body.style.overflow = 'hidden'; 
+    }
+    function closeForgot() { 
+      forgotModal.classList.remove('show'); 
+      document.body.style.overflow = ''; 
+    }
 
     forgotBtn.addEventListener('click', openForgot);
     closeModal.addEventListener('click', closeForgot);
-    forgotModal.addEventListener('click', (e)=>{ if(e.target===forgotModal) closeForgot(); });
+    forgotModal.addEventListener('click', (e) => { 
+      if (e.target === forgotModal) closeForgot(); 
+    });
 
-    function validateReset(){
+    function validateReset() {
       const val = resetInput.value.trim();
-      if(!val){
+      if (!val) {
         resetInput.classList.add('error');
         showToast("⚠ يرجى إدخال رقم الهاتف", "bg-red-500 text-white");
         return false;
@@ -241,28 +249,28 @@
       return true;
     }
 
-    resetBtn.addEventListener('click', ()=>{
-      if(!validateReset()) return;
+    resetBtn.addEventListener('click', () => {
+      if (!validateReset()) return;
       let users = JSON.parse(localStorage.getItem("users")) || [];
       const user = users.find(u => u.phone === resetInput.value.trim());
-      if(user){
+      if (user) {
         showToast("📩 تم إرسال رابط إعادة التعيين إلى: " + resetInput.value);
       } else {
         showToast("❌ هذا الرقم غير مسجل", "bg-red-500 text-white");
       }
-      resetInput.value=""; closeForgot();
+      resetInput.value = ""; closeForgot();
     });
 
-    useSMS.addEventListener('click', ()=>{
-      if(!validateReset()) return;
+    useSMS.addEventListener('click', () => {
+      if (!validateReset()) return;
       let users = JSON.parse(localStorage.getItem("users")) || [];
       const user = users.find(u => u.phone === resetInput.value.trim());
-      if(user){
+      if (user) {
         showToast("📲 تم إرسال كود عبر SMS إلى: " + resetInput.value);
       } else {
         showToast("❌ هذا الرقم غير مسجل", "bg-red-500 text-white");
       }
-      resetInput.value=""; closeForgot();
+      resetInput.value = ""; closeForgot();
     });
   </script>
 </body>
