@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المساعد الذكي</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script>
+    let chatHistory = [];
+
+    (function(){
+      const root = document.documentElement;
+      const pref = localStorage.getItem('theme');
+      if (pref === 'dark' || (!pref && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    })();
+
+    function toggleDarkMode() {
+      const root = document.documentElement;
+      const btn = document.getElementById("themeToggleBtn");
+      root.classList.toggle('dark');
+      if (root.classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+        btn.textContent = "🌙";
+      } else {
+        localStorage.setItem('theme', 'light');
+        btn.textContent = "🌙";
+      }
+    }
+
+    window.onload = () => {
+      const btn = document.getElementById("themeToggleBtn");
+      if (localStorage.getItem("theme") === "dark") {
+        document.documentElement.classList.add("dark");
+        btn.textContent = "🌙";
+      } else {
+        document.documentElement.classList.remove("dark");
+        btn.textContent = "🌙";
+      }
+      loadHistory();
+    };
+
+    function addMessage(content, sender = 'user', type = 'text') {
+      const chatBox = document.getElementById("chatBox");
+      const msg = document.createElement("div");
+
+      if (type === 'text') {
+        msg.className = sender === 'user'
+          ? "bg-indigo-500 text-white p-3 rounded-2xl max-w-xs self-end shadow-md"
+          : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-3 rounded-2xl max-w-xs self-start shadow";
+        msg.innerText = content;
+      } else if (type === 'image') {
+        msg.className = "self-end max-w-xs";
+        const img = document.createElement("img");
+        img.src = content;
+        img.className = "rounded-2xl shadow-md";
+        msg.appendChild(img);
+      }
+
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      chatHistory.push({ sender, content, type });
+      localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const message = input.value.trim();
+      if (message === "") return;
+
+      addMessage(message, 'user');
+      setTimeout(() => {
+        addMessage("تم استلام رسالتك 🤖", 'bot');
+      }, 500);
+
+      input.value = "";
+    }
+
+    function sendImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        addMessage(e.target.result, 'user', 'image');
+        setTimeout(() => {
+          addMessage("صورة جميلة 👍", 'bot');
+        }, 500);
+      };
+      reader.readAsDataURL(file);
+      event.target.value = "";
+    }
+
+    function loadHistory() {
+      const saved = localStorage.getItem("chatHistory");
+      if (saved) {
+        chatHistory = JSON.parse(saved);
+        chatHistory.forEach(msg => {
+          addMessage(msg.content, msg.sender, msg.type);
+        });
+      }
+    }
+
+    function clearHistory() {
+      localStorage.removeItem("chatHistory");
+      chatHistory = [];
+      document.getElementById("chatBox").innerHTML = "";
+    }
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col min-h-screen">
+
+  <!-- النافبار -->
+  <header class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <img src="https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png" class="h-20 dark:hidden" alt="Logo" />
+      <img src="https://i.postimg.cc/Zq5fgvQ6/Background.png" class="h-20 hidden dark:block" alt="Logo" />
+      <span class="text-xl font-bold text-indigo-600 dark:text-indigo-400"></span>
+    </div>
+
+    <nav class="flex gap-6 items-center">
+      <a href="index.html" class="hover:text-indigo-500">الرئيسية</a>
+      <a href="Ai_assitant.html" class="text-indigo-600 dark:text-pink-400 font-bold">المساعد الذكي</a>
+      <a href="login.html" class="bg-indigo-500 text-white px-4 py-2 rounded-xl hover:bg-pink-500">تسجيل الدخول</a>
+      <button id="themeToggleBtn" onclick="toggleDarkMode()" class="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-xl">🌙</button>
+    </nav>
+  </header>
+
+  <!-- واجهة المساعد -->
+  <main class="flex-1 flex flex-col items-center justify-center p-6">
+    <div class="w-full max-w-2xl flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-[70vh]">
+      <div id="chatBox" class="flex flex-col gap-3 p-4 overflow-y-auto flex-1"></div>
+
+      <div class="flex items-center p-4 border-t dark:border-gray-700 gap-2">
+        <input id="userInput" type="text" placeholder="اكتب سؤالك هنا..." 
+               class="flex-1 p-2 rounded-xl border dark:border-gray-700 bg-gray-100 dark:bg-gray-700 focus:outline-none" 
+               onkeydown="if(event.key==='Enter'){sendMessage();}" />
+        <input type="file" accept="image/*" id="imageInput" class="hidden" onchange="sendImage(event)" />
+        <label for="imageInput" class="cursor-pointer bg-gray-200 dark:bg-gray-700 px-3 py-2 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600">📷</label>
+        <button onclick="sendMessage()" class="bg-indigo-500 hover:bg-pink-500 text-white px-4 py-2 rounded-xl">إرسال</button>
+        <button onclick="clearHistory()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl">مسح المحادثة</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- الفوتر -->
+  <footer class="bg-gray-200 dark:bg-gray-800 text-center p-4 rounded-t-2xl shadow-inner">
+    <p>© 2025 EduAi - جميع الحقوق محفوظة</p>
+  </footer>
+</body>
+</html>

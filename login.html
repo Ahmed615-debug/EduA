@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(#9333ea 70%, #6366f1 100%);
+      font-family: sans-serif;
+    }
+    input:focus {
+      transform: scale(1.02);
+      transition: 0.2s ease;
+      box-shadow: 0 0 12px rgba(99,102,241,0.4);
+    }
+    .error {
+      border-color: red !important;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      font-size: 16px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+      z-index: 9999;
+    }
+    .toast.show {opacity:1; transform:translateY(0);}
+    .toast.hide {opacity:0; transform:translateY(-20px);}
+
+    /* مودال نسيت كلمة المرور */
+    :root{--pri:#9333ea; --sec:#6366f1;}
+    .btn-gradient{
+      background: linear-gradient(90deg, var(--sec), var(--pri));
+      color:#fff; border:none; border-radius: 14px;
+      padding: 0.75rem 1.5rem; font-weight: 800;
+      box-shadow: 0 12px 24px rgba(99,102,241,.25);
+      transition: transform .25s ease, box-shadow .25s ease;
+      cursor: pointer;
+    }
+    .btn-gradient:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(147,51,234,.28);
+    }
+    .modal-backdrop{
+      position:fixed; inset:0;
+      background: rgba(15,23,42,0.45);
+      backdrop-filter: blur(6px);
+      display:none; align-items:center; justify-content:center;
+      z-index: 1000;
+    }
+    .modal-backdrop.show{ display:flex; animation: fadeIn .25s both; }
+    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+    .modal-card{
+      width: min(92vw, 520px);
+      background: rgba(255,255,255,.9);
+      border-radius: 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.6);
+      position:relative; padding: 26px;
+      transform: scale(.9); opacity:0;
+      animation: pop .28s .08s ease-out both;
+    }
+    @keyframes pop{ from{transform:scale(.9);opacity:0} to{transform:scale(1);opacity:1} }
+    .modal-close{
+      position:absolute; top:10px; right:10px;
+      width:40px; height:40px; border-radius: 12px;
+      display:grid; place-items:center;
+      color:#475569; background: rgba(255,255,255,.9);
+      border:1px solid rgba(0,0,0,.06);
+      cursor:pointer; transition: transform .2s;
+    }
+    .modal-close:hover{ transform: rotate(90deg); background:#fff; }
+    .input-wrap{ position:relative; }
+    .input-wrap .icon{
+      position:absolute; right:14px; top:50%; transform: translateY(-50%);
+      font-size:1rem; color:#94a3b8;
+    }
+    .input{
+      width:100%; border:1px solid #e5e7eb;
+      border-radius:14px; padding:12px 44px 12px 14px;
+      background:#fff; transition: all .2s ease;
+    }
+    .input:focus{
+      outline:none; border-color: var(--sec);
+      box-shadow: 0 0 0 4px rgba(99,102,241,.15), 0 10px 24px rgba(99,102,241,.18);
+    }
+    .input.error{
+      border-color:#ef4444 !important;
+      box-shadow: 0 0 0 4px rgba(239,68,68,.15), 0 10px 24px rgba(239,68,68,.18) !important;
+    }
+    .modal-title{ font-size:1.35rem; font-weight:900; text-align:center; color:var(--pri); margin-bottom:12px; }
+    .helper{ font-size:.9rem; color:#64748b; text-align:center; margin-bottom:18px; }
+    .btn-ghost{
+      background: transparent; border:1px dashed #cbd5e1; color:#475569;
+      border-radius:12px; padding:.6rem 1rem; font-weight:700; cursor:pointer;
+    }
+    .btn-ghost:hover{ background: rgba(148,163,184,.1); border-color:#94a3b8; }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-3xl">
+
+    <!-- اللوجو -->
+    <div class="flex justify-center mb-6">
+      <img src="https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png" 
+           alt="Logo" class="h-24">
+    </div>
+
+    <h2 class="text-4xl font-extrabold text-center text-black mb-10">
+      ✨تسجيل الدخول✨
+    </h2>
+
+    <form id="loginForm" class="grid grid-cols-1 gap-6">
+      <div class="relative w-full">
+        <label class="block text-gray-700 mb-2">رقم الهاتف</label>
+        <input type="text" id="phone" placeholder="أدخل رقم الهاتف" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3">
+        <i class="fa-solid fa-phone absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block text-gray-700 mb-2">كلمة المرور</label>
+        <input type="password" id="password" placeholder="أدخل كلمة المرور" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3">
+        <i class="fa-solid fa-lock absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+    </form>
+
+    <div class="mt-10 text-center">
+      <button id="loginBtn" class="btn-gradient text-lg">
+        دخول
+      </button>
+    </div>
+
+    <div class="text-center mt-4">
+      <button id="forgotBtn" class="text-[#9333ea] font-semibold hover:underline">
+        نسيت كلمة المرور؟
+      </button>
+    </div>
+
+    <p class="text-center text-gray-600 mt-6">
+      ليس لديك حساب؟ 
+      <a href="signup.html" class="text-[#9333ea] font-semibold hover:underline">إنشاء حساب</a>
+    </p>
+  </div>
+
+  <div id="toast" class="toast hide"></div>
+
+  <!-- مودال نسيت كلمة المرور -->
+  <div id="forgotModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeModal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      <h3 class="modal-title">🔑 استعادة كلمة المرور</h3>
+      <p class="helper">أدخل رقم الهاتف لإرسال كود إعادة التعيين.</p>
+      <div class="input-wrap mb-4">
+        <i class="fa-solid fa-phone icon"></i>
+        <input type="text" id="resetInput" class="input" placeholder="01xxxxxxxxx">
+      </div>
+      <div class="flex gap-3 justify-center">
+        <button id="resetBtn" class="btn-gradient">إرسال رابط إعادة التعيين</button>
+        <button id="useSMS" class="btn-ghost">إرسال كود عبر SMS</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const toast = document.getElementById('toast');
+    const inputs = document.querySelectorAll('.inputField');
+
+    function showToast(msg, color="bg-green-500 text-white") {
+      toast.textContent = msg;
+      toast.className = `toast show ${color}`;
+      setTimeout(()=> toast.className = `toast hide ${color}`, 3000);
+    }
+
+    loginBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      let valid = true;
+      inputs.forEach(input=>{
+        if(!input.value.trim()){
+          input.classList.add("error");
+          valid = false;
+        } else {
+          input.classList.remove("error");
+        }
+      });
+      if(!valid){
+        showToast("⚠ يرجى ملء جميع الحقول", "bg-red-500 text-white");
+        return;
+      }
+
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.phone === phone && u.password === password);
+
+      if(user){
+        showToast("✅ تم تسجيل الدخول بنجاح!");
+        setTimeout(()=> { window.location.href = "home.html"; }, 1500);
+      } else {
+        showToast("❌ رقم الهاتف أو كلمة المرور غير صحيحة", "bg-red-500 text-white");
+      }
+    });
+
+    // مودال نسيت كلمة المرور
+    const forgotBtn  = document.getElementById('forgotBtn');
+    const forgotModal= document.getElementById('forgotModal');
+    const closeModal = document.getElementById('closeModal');
+    const resetBtn   = document.getElementById('resetBtn');
+    const useSMS     = document.getElementById('useSMS');
+    const resetInput = document.getElementById('resetInput');
+
+    function openForgot(){ forgotModal.classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeForgot(){ forgotModal.classList.remove('show'); document.body.style.overflow=''; }
+
+    forgotBtn.addEventListener('click', openForgot);
+    closeModal.addEventListener('click', closeForgot);
+    forgotModal.addEventListener('click', (e)=>{ if(e.target===forgotModal) closeForgot(); });
+
+    function validateReset(){
+      const val = resetInput.value.trim();
+      if(!val){
+        resetInput.classList.add('error');
+        showToast("⚠ يرجى إدخال رقم الهاتف", "bg-red-500 text-white");
+        return false;
+      }
+      resetInput.classList.remove('error');
+      return true;
+    }
+
+    resetBtn.addEventListener('click', ()=>{
+      if(!validateReset()) return;
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.phone === resetInput.value.trim());
+      if(user){
+        showToast("📩 تم إرسال رابط إعادة التعيين إلى: " + resetInput.value);
+      } else {
+        showToast("❌ هذا الرقم غير مسجل", "bg-red-500 text-white");
+      }
+      resetInput.value=""; closeForgot();
+    });
+
+    useSMS.addEventListener('click', ()=>{
+      if(!validateReset()) return;
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.phone === resetInput.value.trim());
+      if(user){
+        showToast("📲 تم إرسال كود عبر SMS إلى: " + resetInput.value);
+      } else {
+        showToast("❌ هذا الرقم غير مسجل", "bg-red-500 text-white");
+      }
+      resetInput.value=""; closeForgot();
+    });
+  </script>
+</body>
+</html>

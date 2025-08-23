@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المدرس الذكي الافتراضي | المرحلة الثانوية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 font-sans text-gray-800 dark:text-gray-100">
+
+  <!-- الهيدر -->
+  <header class="flex justify-between items-center px-6 md:px-10 py-4 bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <div class="flex items-center gap-4">
+      <!-- زر الإعدادات (الهامبورجر) -->
+      <button id="settingsBtn" class="text-2xl text-gray-800 dark:text-gray-200 focus:outline-none">
+        ☰
+      </button>
+
+      <!-- اللوجو -->
+      <img id="logo" src="https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png" alt="Logo" class="h-14 md:h-20 w-auto">
+    </div>
+    
+    <!-- النافبار -->
+    <nav class="hidden md:flex items-center gap-4">
+      <a href="ranking.html" class="nav-item">الترتيب</a>
+      <a href="assistant.html" class="nav-item">المساعد الذكي</a>
+      <a href="library.html" class="nav-item">المكتبة</a>
+      <a href="exams.html" class="nav-item">الاختبارات</a>
+      <a href="dashboard.html" class="nav-item">لوحة المتابعة</a>
+      <a href="home_secondary.html" class="nav-item active-box">المرحلة الثانوية</a>
+
+      <!-- زرار تبديل الوضع -->
+      <button id="toggleDark" 
+              class="ml-4 px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold transition">
+        🌙
+      </button>
+    </nav>
+  </header>
+
+  <!-- خلفية شفافة عند فتح القائمة -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40 transition-opacity"></div>
+
+  <!-- قائمة الإعدادات الجانبية الاحترافية -->
+  <div id="settingsMenu" 
+       class="fixed top-0 right-0 h-full w-80 bg-white dark:bg-gray-900 shadow-2xl transform translate-x-full transition-all duration-500 z-50 flex flex-col">
+
+    <!-- الهيدر -->
+    <div class="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
+      <div class="flex items-center gap-3">
+        <img src="https://i.postimg.cc/8zYk5C8c/user-icon.png" 
+             alt="Profile" 
+             class="w-14 h-14 rounded-full border-2 border-indigo-500 shadow-md">
+        <div>
+          <p class="font-bold text-lg text-gray-900 dark:text-gray-100">أحمد محمد</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">@ahmed_user</p>
+        </div>
+      </div>
+      <button id="closeSettings" 
+              class="text-gray-500 dark:text-gray-300 text-2xl hover:text-red-500 transition">
+        ✖
+      </button>
+    </div>
+
+    <!-- الجسم -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+      <div>
+        <h4 class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">الحساب</h4>
+        <ul class="space-y-4">
+          <li>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-800 transition">
+              <i class="fa-solid fa-user text-indigo-600"></i>
+              <span>الملف الشخصي</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-800 transition">
+              <i class="fa-solid fa-shield-halved text-green-600"></i>
+              <span>الخصوصية والأمان</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-800 transition">
+              <i class="fa-solid fa-bell text-yellow-500"></i>
+              <span>الإشعارات</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">التخصيص</h4>
+        <ul class="space-y-4">
+          <li>
+            <button id="toggleDarkMenu" 
+                    class="w-full flex items-center justify-between p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-800 transition">
+              <div class="flex items-center gap-3">
+                <i class="fa-solid fa-moon text-purple-600"></i>
+                <span>الوضع الليلي</span>
+              </div>
+              <span class="text-sm text-gray-400">ON/OFF</span>
+            </button>
+          </li>
+          <li>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-800 transition">
+              <i class="fa-solid fa-language text-blue-500"></i>
+              <span>تغيير اللغة</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- الفوتر -->
+    <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+      <button class="w-full flex items-center justify-center gap-3 py-3 bg-red-500 text-white rounded-xl font-bold hover:bg-red-600 transition">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        تسجيل الخروج
+      </button>
+    </div>
+  </div>
+
+  <!-- ستايل النافبار -->
+  <style>
+    .nav-item {
+      padding: 10px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+    }
+    .nav-item:hover {
+      background: #3b82f6; 
+      color: #fff;
+    }
+    .dark .nav-item:hover {
+      background: #facc15; 
+      color: #000;
+    }
+    .active-box {
+      background: linear-gradient(to right, #6366f1, #9333ea);
+      color: #fff !important;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+  </style>
+
+  <!-- البانر الترحيبي -->
+  <section class="text-center py-20 md:py-24 bg-gradient-to-r from-indigo-500 to-purple-600 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+    <h2 class="text-3xl md:text-5xl font-bold mb-6 relative z-10 animate-pulse">مرحباً بك في المدرس الذكي الافتراضي</h2>
+    <p class="text-base md:text-lg mb-6 relative z-10">أول منصة تعليمية ذكية للمرحلة الإعدادية والثانوية في مصر 🎓</p>
+  </section>
+
+  <!-- الصفوف -->
+  <section class="px-6 md:px-10 py-16 max-w-6xl mx-auto text-center">
+    <h3 class="text-2xl md:text-3xl font-bold mb-10 text-indigo-700 dark:text-yellow-400">📚 اختر الصف الدراسي</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- الصف الأول -->
+      <a href="first.html" class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer">
+        <i class="fa-solid fa-1 text-5xl text-purple-600 mb-4"></i>
+        <h4 class="text-xl font-bold mb-2">الصف الأول الثانوي</h4>
+        <p class="text-gray-600 dark:text-gray-300">دروس وملخصات وتمارين خاصة بالصف الأول.</p>
+      </a>
+      <!-- الصف الثاني -->
+      <a href="second.html" class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer">
+        <i class="fa-solid fa-2 text-5xl text-indigo-600 mb-4"></i>
+        <h4 class="text-xl font-bold mb-2">الصف الثاني الثانوي</h4>
+        <p class="text-gray-600 dark:text-gray-300">محتوى مخصص يساعدك على الاستعداد للمرحلة النهائية.</p>
+      </a>
+      <!-- الصف الثالث -->
+      <a href="third.html" class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-2 cursor-pointer">
+        <i class="fa-solid fa-3 text-5xl text-blue-600 mb-4"></i>
+        <h4 class="text-xl font-bold mb-2">الصف الثالث الثانوي</h4>
+        <p class="text-gray-600 dark:text-gray-300">التحضير النهائي للامتحانات الوزارية والدخول للجامعة.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- أهمية المرحلة الثانوية -->
+  <section class="px-6 md:px-10 py-16 bg-gray-50 dark:bg-gray-900">
+    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-indigo-700 dark:text-yellow-400 text-center">أهلاً بك في المنصة</h3>
+    <div class="bg-white dark:bg-gray-800 p-6 md:p-10 rounded-2xl shadow-lg hover:shadow-2xl transition w-full md:w-4/5 mx-auto">
+      <h4 class="text-xl font-bold mb-4 text-indigo-600 dark:text-yellow-300">✨ أهمية المرحلة الثانوية:</h4>
+      <ul class="text-right list-disc list-inside space-y-4 md:space-y-5 text-base md:text-lg text-gray-700 dark:text-gray-200">
+        <li>هي المرحلة الفاصلة اللي بتحدد الكلية أو المجال اللي هتدخله.</li>
+        <li>بتجهزك تتعامل مع نظام امتحانات أصعب وأكثر اعتماداً على الفهم.</li>
+        <li>بتعلمك ازاي تدير وقتك وتوازن بين المواد المختلفة.</li>
+        <li>فرصة تبني فيها عادات مذاكرة ذكية هتفضل معاك طول عمرك.</li>
+        <li>كل مجهودك دلوقتي هتجني ثماره في الجامعة وحياتك العملية.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="bg-gray-800 text-white text-center py-6 mt-10">
+    <p>© 2025 المدرس الذكي الافتراضي – جميع الحقوق محفوظة</p>
+  </footer>
+
+  <!-- سكربت الوضع الليلي + الإعدادات -->
+  <script>
+    const toggleDark = document.getElementById("toggleDark");
+    const toggleDarkMenu = document.getElementById("toggleDarkMenu");
+    const html = document.documentElement;
+    const logo = document.getElementById("logo");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsMenu = document.getElementById("settingsMenu");
+    const closeSettings = document.getElementById("closeSettings");
+    const overlay = document.getElementById("overlay");
+
+    function updateLogo() {
+      if (html.classList.contains("dark")) {
+        logo.src = "https://i.postimg.cc/Zq5fgvQ6/Background.png"; 
+      } else {
+        logo.src = "https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png"; 
+      }
+    }
+
+    if (localStorage.getItem("theme") === "dark") {
+      html.classList.add("dark");
+    }
+    updateLogo();
+
+    function toggleTheme() {
+      html.classList.toggle("dark");
+      if (html.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+      } else {
+        localStorage.setItem("theme", "light");
+      }
+      updateLogo();
+    }
+
+    toggleDark.addEventListener("click", toggleTheme);
+    if(toggleDarkMenu){
+      toggleDarkMenu.addEventListener("click", toggleTheme);
+    }
+
+    // فتح القائمة
+    settingsBtn.addEventListener("click", () => {
+      settingsMenu.classList.remove("translate-x-full");
+      overlay.classList.remove("hidden");
+    });
+
+    // غلق القائمة بزر الإغلاق
+    closeSettings.addEventListener("click", () => {
+      settingsMenu.classList.add("translate-x-full");
+      overlay.classList.add("hidden");
+    });
+
+    // غلق القائمة عند الضغط خارجها
+    overlay.addEventListener("click", () => {
+      settingsMenu.classList.add("translate-x-full");
+      overlay.classList.add("hidden");
+    });
+  </script>
+
+  <!-- أيقونات Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المدرس الذكي الافتراضي | الرئيسية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 font-sans text-gray-800 dark:text-gray-100">
+
+  <!-- الهيدر -->
+  <header class="flex justify-between items-center px-6 md:px-10 py-4 bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+    <!-- اللوجو -->
+    <img id="logo" src="1a441497-a7ea-436b-a128-5960ba22e696-removebg-preview (1).png" alt="Logo" class="h-14 md:h-20 w-auto">
+ 
+    
+    <!-- النافبار -->
+    <nav class="hidden md:flex items-center gap-6">
+      <a href="login.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-yellow-300">الترتيب</a>
+      <a href="Ai_assitant.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-yellow-300">المساعد الذكي</a>
+      <a href="login.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-yellow-300">المكتبة</a>
+      <a href="login.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-yellow-300">الاختبارات</a>
+      <a href="login.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-yellow-300">لوحة المتابعة</a>
+      <a href="login.html" class="text-indigo-600 dark:text-yellow-400 font-bold">الرئيسية</a>
+      <a href="login.html" 
+      class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-xl shadow hover:opacity-90 transition">
+      تسجيل الدخول
+      </a>
+       <button id="darkModeToggle" 
+        class="px-3 py-2 rounded-xl bg-gray-200 text-gray-800 hover:bg-gray-300 
+             dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition">
+  🌙
+</button>
+    </nav>
+  </header>
+
+  <!-- البانر -->
+  <section class="text-center py-20 md:py-24 bg-gradient-to-r from-indigo-500 to-purple-600 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+    <h2 class="text-3xl md:text-5xl font-bold mb-6 relative z-10 animate-pulse">مرحباً بك في المدرس الذكي الافتراضي</h2>
+    <p class="text-base md:text-lg mb-6 relative z-10">أول منصة تعليمية ذكية للمرحلة الإعدادية والثانوية في مصر 🎓</p>
+    <a href="login.html" class="px-6 md:px-8 py-2 md:py-3 bg-yellow-400 text-black font-semibold rounded-xl hover:bg-yellow-300 transition relative z-10">ابدأ الآن</a>
+  </section>
+
+  <!-- مميزات مختصرة -->
+  <section class="px-6 md:px-10 py-16 md:py-20 bg-gray-50 dark:bg-gray-900">
+    <h3 class="text-2xl md:text-3xl font-bold text-center mb-10 md:mb-14 text-indigo-700 dark:text-yellow-400">✨ ماذا نقدم لك؟</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <!-- كل كرت -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">🤖 AI Assistant</h4>
+        <p>مساعد ذكي يجاوب أسئلتك ويعمل لك خطة مذاكرة شخصية يومية أو أسبوعية.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">👀 Pop-up Quiz</h4>
+        <p>أسئلة مفاجئة أثناء المذاكرة لتثبيت المعلومات وكأن عندك مدرس خفي.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">📊 Dashboard متابعة</h4>
+        <p>تحليلات مفصلة عن تقدمك، نقاط قوتك وضعفك، ومتوسط درجاتك.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">📝 امتحانات تجريبية</h4>
+        <p>حل امتحانات كاملة تحاكي امتحانات الوزارة مع تقييم مقارنة بزمايلك.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">📚 المكتبة الذكية</h4>
+        <p>ملخصات مبسطة، خرائط ذهنية، وجداول مراجعة تساعدك تذاكر أسرع.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">🏆 Leaderboard</h4>
+        <p>نظام نقاط وأوسمة مع ترتيب الطلاب لزيادة التنافس والتحفيز.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">📈 متابعة أسبوعية</h4>
+        <p>ملخص كل أسبوع عن مستواك وأين تركز لتحسن نتيجتك.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">🎮 Gamification</h4>
+        <p>كسب نقاط، Badges، والمنافسة مع زمايلك تخلي المذاكرة لعبة.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-2xl transition transform hover:-translate-y-2">
+        <h4 class="font-bold text-lg mb-3">⚡ سرعة وسهولة</h4>
+        <p>واجهة بسيطة وسريعة، تقدر توصل لكل حاجة في ثواني.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- وصف المشروع -->
+  <section class="px-6 md:px-10 py-16 max-w-5xl mx-auto text-center">
+    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-indigo-700 dark:text-yellow-400">عن المنصة</h3>
+    <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-lg hover:shadow-2xl transition">
+      <p class="text-base md:text-lg leading-relaxed text-gray-700 dark:text-gray-200">
+        "المدرس الذكي الافتراضي" هو منصة تعليمية مبتكرة تعتمد على تقنيات الذكاء الاصطناعي لدعم طلاب المرحلتين الإعدادية والثانوية في مصر. هدفنا هو تحويل عملية المذاكرة من مجرد حفظ روتيني إلى تجربة تفاعلية غنية بالشرح، التدريب، والاختبارات الذكية.
+      </p>
+    </div>
+  </section>
+
+  <!-- قائمة المميزات -->
+  <section class="px-6 md:px-10 py-16 bg-gray-50 dark:bg-gray-900">
+    <h3 class="text-2xl md:text-3xl font-bold mb-6 text-indigo-700 dark:text-yellow-400 text-center">ماذا نقدم لك؟</h3>
+    <div class="bg-white dark:bg-gray-800 p-6 md:p-10 rounded-2xl shadow-lg hover:shadow-2xl transition w-full md:w-4/5 mx-auto min-h-[300px]">
+      <ul class="text-right list-disc list-inside space-y-4 md:space-y-5 text-base md:text-lg text-gray-700 dark:text-gray-200">
+        <li><strong>Smart answers:</strong> الذكاء الاصطناعي يجاوبك ويشرحلك ببساطة لحد ما تفهم مش بس تحفظ.</li>
+        <li><strong>AI Assistant:</strong> مساعد يجاوب أسئلتك تبعاً للمنهج ويشرحها بشكل مبسط.</li>
+        <li><strong>Pop-up Quizzes:</strong> أسئلة مفاجئة أثناء المذاكرة لتثبيت المعلومة.</li>
+        <li><strong>Exams:</strong> امتحانات تجريبية تحاكي النظام الجديد مع تصحيح فوري.</li>
+        <li><strong>Dashboard متابعة:</strong> تعرض تقدمك، نقاط قوتك وضعفك.</li>
+        <li><strong>Leaderboard:</strong> نظام نقاط وترتيب لزيادة التنافس.</li>
+        <li><strong>Smart library:</strong> ملخصات وخرائط وجداول لتسهل المذاكرة.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- المشاكل -->
+  <section class="px-6 md:px-10 py-16 max-w-5xl mx-auto">
+    <h3 class="text-2xl font-bold mb-6 text-indigo-700 dark:text-yellow-400 text-center">المشاكل التي نحلها</h3>
+    <div class="bg-white dark:bg-gray-800 p-6 md:p-10 rounded-2xl shadow-lg hover:shadow-2xl transition">
+      <ul class="text-right list-disc list-inside space-y-3 text-base md:text-lg text-gray-700 dark:text-gray-200">
+        <li>توفير الوقت عبر إجابات دقيقة وسريعة.</li>
+        <li>حل مشكلة غياب المراجع الموثوقة عبر محتوى مطابق للمناهج.</li>
+        <li>التدريب العملي المستمر عبر اختبارات إلكترونية محاكية.</li>
+        <li>تنظيم وقت المذاكرة بخطط مخصصة لكل طالب.</li>
+        <li>متابعة فردية عبر لوحة Dashboard تعرض التقدم والنتائج.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="bg-indigo-600 text-center text-white py-16 md:py-20">
+    <h3 class="text-2xl md:text-3xl font-bold mb-6 animate-bounce">🚀 ابدأ رحلتك التعليمية الذكية الآن</h3>
+    <a href="login.html" class="px-6 md:px-8 py-2 md:py-3 bg-yellow-400 text-black font-semibold rounded-xl hover:bg-yellow-300 transition">سجل دخولك</a>
+  </section>
+
+  <!-- الفوتر -->
+  <footer class="bg-gray-800 text-white text-center py-6 mt-10">
+    <p>© 2025 المدرس الذكي الافتراضي – جميع الحقوق محفوظة</p>
+  </footer>
+
+ <script>
+const toggleBtn = document.getElementById('darkModeToggle');
+const html = document.documentElement;
+const logo = document.getElementById('logo');
+
+function updateLogo() {
+  if (html.classList.contains('dark')) {
+    logo.src = 'https://i.postimg.cc/Zq5fgvQ6/Background.png'; // لوجو الوضع الداكن
+  } else {
+    logo.src = 'https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png'; // لوجو الوضع الفاتح
+  }
+}
+
+// تحميل الوضع من التخزين عند بدء الصفحة
+if (localStorage.getItem('theme') === 'dark') {
+  html.classList.add('dark');
+}
+updateLogo();
+
+toggleBtn.addEventListener('click', () => {
+  html.classList.toggle('dark');
+  if (html.classList.contains('dark')) {
+    localStorage.setItem('theme', 'dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+  }
+  updateLogo(); // تغيير اللوجو عند تبديل الوضع
+});
+</script>
+</body>
+</html>

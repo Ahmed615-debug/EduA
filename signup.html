@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(#9333ea 70%, #6366f1 100%);
+    }
+
+    .glass {
+      background: rgba(255, 255, 255);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    input:focus, select:focus {
+      transform: scale(1.02);
+      transition: 0.25s ease;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+    }
+
+    .error {
+      border-color: red !important;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.5) !important;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      color: #333;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      font-size: 16px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+      z-index: 999;
+    }
+    .toast.show {opacity:1; transform:translateY(0);}
+    .toast.hide {opacity:0; transform:translateY(-20px);}
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+  <div class="glass shadow-2xl rounded-3xl p-10 w-full max-w-5xl text-gray-800">
+    
+    <!-- Logo -->
+    <div class="flex justify-center mb-6">
+      <img src="https://i.postimg.cc/7L0S9WxF/Chat-GPT-Image-Aug-21-2025-01-04-37-PM.png" 
+           alt="Logo" class="h-24">
+    </div>
+
+    <!-- Title -->
+    <h2 class="text-4xl font-extrabold text-center mb-10">
+      ✨ إنشاء حساب جديد ✨
+    </h2>
+
+    <!-- Form -->
+    <form id="signupForm" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+      <div class="relative w-full">
+        <label class="block mb-2">الاسم الرباعي</label>
+        <input type="text" id="fullname" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل الاسم الكامل">
+        <i class="fa-solid fa-user absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">رقم التليفون</label>
+        <input type="tel" id="phone" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم التليفون">
+        <i class="fa-solid fa-phone absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">رقم ولي الأمر</label>
+        <input type="tel" id="parentPhone" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم ولي الأمر">
+        <i class="fa-solid fa-phone-volume absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">المحافظة</label>
+        <select id="gov" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
+          <option value="">اختر المحافظة</option>
+          <option>القاهرة</option>
+          <option>الجيزة</option>
+          <option>الإسكندرية</option>
+          <option>الدقهلية</option>
+          <option>الشرقية</option>
+          <option>المنوفية</option>
+          <option>القليوبية</option>
+          <option>البحيرة</option>
+          <option>الغربية</option>
+          <option>الفيوم</option>
+          <option>كفر الشيخ</option>
+          <option>بني سويف</option>
+          <option>المنيا</option>
+          <option>أسيوط</option>
+          <option>سوهاج</option>
+          <option>قنا</option>
+          <option>الأقصر</option>
+          <option>أسوان</option>
+          <option>دمياط</option>
+          <option>بورسعيد</option>
+          <option>الإسماعيلية</option>
+          <option>السويس</option>
+          <option>شمال سيناء</option>
+          <option>جنوب سيناء</option>
+          <option>الوادي الجديد</option>
+          <option>مطروح</option>
+          <option>البحر الأحمر</option>
+        </select>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">نوع التعليم</label>
+        <select id="eduType" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
+          <option value="">اختر النوع</option>
+          <option>عام</option>
+          <option>أزهري</option>
+          <option>تجريبي</option>
+          <option>خاص</option>
+          <option>لغات</option>
+          <option>دولي</option>
+        </select>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">السنة الدراسية</label>
+        <select id="grade" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
+          <option value="">اختر السنة</option>
+          <option>أولى ثانوي</option>
+          <option>ثانية ثانوي</option>
+          <option>ثالثة ثانوي</option>
+        </select>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">كلمة المرور</label>
+        <input type="password" id="password" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل كلمة المرور">
+        <i class="fa-solid fa-lock absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+
+      <div class="relative w-full">
+        <label class="block mb-2">تأكيد كلمة المرور</label>
+        <input type="password" id="confirmPassword" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أعد إدخال كلمة المرور">
+        <i class="fa-solid fa-lock-keyhole absolute left-3 top-[44px] text-gray-400"></i>
+      </div>
+    </form>
+
+    <div class="mt-10 text-center">
+      <button id="submitBtn" class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-10 py-4 rounded-2xl text-lg font-bold shadow-xl transition duration-300 transform hover:-translate-y-1 hover:scale-105">
+        🚀 إنشاء الحساب
+      </button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script>
+    const submitBtn = document.getElementById('submitBtn');
+    const toast = document.getElementById('toast');
+    const inputs = document.querySelectorAll('.inputField');
+
+    function showToast(msg, color="bg-green-500 text-white") {
+      toast.textContent = msg;
+      toast.className = `toast show ${color}`;
+      setTimeout(()=> toast.className = `toast hide ${color}`, 3000);
+    }
+
+    submitBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      let valid = true;
+
+      inputs.forEach(input=>{
+        if(!input.value.trim()){
+          input.classList.add("error");
+          valid = false;
+        } else {
+          input.classList.remove("error");
+        }
+      });
+
+      if(!valid){
+        showToast("⚠ يرجى ملء جميع الحقول", "bg-red-500 text-white");
+        return;
+      }
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const parentPhone = document.getElementById('parentPhone').value.trim();
+      const gov = document.getElementById('gov').value;
+      const eduType = document.getElementById('eduType').value;
+      const grade = document.getElementById('grade').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if(password !== confirmPassword){
+        showToast("❌ كلمة المرور غير متطابقة!", "bg-red-500 text-white");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      if(users.some(u => u.phone === phone)){
+        showToast("❌ هذا الرقم مسجل بالفعل", "bg-red-500 text-white");
+        return;
+      }
+
+      users.push({fullname, phone, parentPhone, gov, eduType, grade, password});
+      localStorage.setItem("users", JSON.stringify(users));
+
+      showToast("✅ تم إنشاء الحساب بنجاح!");
+      setTimeout(()=> {
+        window.location.href = "login.html";
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
