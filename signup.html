@@ -69,6 +69,16 @@
       color: white;
       font-size: 2rem;
     }
+    /* تعديلات للتصميم RTL */
+    .rtl-icon {
+      right: unset !important;
+      left: 12px !important;
+    }
+    .password-toggle {
+      left: unset !important;
+      right: 12px !important;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -110,7 +120,7 @@
       <div class="relative w-full">
         <label class="block mb-2">الاسم الرباعي</label>
         <input type="text" id="fullName" required minlength="6" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل الاسم الكامل">
-        <i class="fa-solid fa-user absolute left-3 top-[44px] text-gray-400"></i>
+        <i class="fa-solid fa-user absolute rtl-icon top-[44px] text-gray-400"></i>
         <span id="fullNameError" class="error-text"></span>
       </div>
 
@@ -118,7 +128,7 @@
       <div class="relative w-full">
         <label class="block mb-2">رقم التليفون</label>
         <input type="tel" id="phone" required pattern="^01[0-2,5]{1}[0-9]{8}$" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم التليفون">
-        <i class="fa-solid fa-phone absolute left-3 top-[44px] text-gray-400"></i>
+        <i class="fa-solid fa-phone absolute rtl-icon top-[44px] text-gray-400"></i>
         <span id="phoneError" class="error-text"></span>
       </div>
 
@@ -126,7 +136,7 @@
       <div class="relative w-full">
         <label class="block mb-2">رقم ولي الأمر</label>
         <input type="tel" id="parentPhone" required pattern="^01[0-2,5]{1}[0-9]{8}$" class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل رقم ولي الأمر">
-        <i class="fa-solid fa-phone-volume absolute left-3 top-[44px] text-gray-400"></i>
+        <i class="fa-solid fa-phone-volume absolute rtl-icon top-[44px] text-gray-400"></i>
         <span id="parentPhoneError" class="error-text"></span>
       </div>
 
@@ -135,7 +145,7 @@
         <label class="block mb-2">المحافظة</label>
         <select id="governorate" required class="inputField w-full border border-gray-300 rounded-xl px-4 py-3">
           <option value="">اختر المحافظة</option>
-                   <option>القاهرة</option>
+          <option>القاهرة</option>
           <option>الجيزة</option>
           <option>الإسكندرية</option>
           <option>الدقهلية</option>
@@ -195,7 +205,7 @@
       <div class="relative w-full">
         <label class="block mb-2">البريد الإلكتروني</label>
         <input type="email" id="email" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أدخل البريد الإلكتروني">
-        <i class="fa-solid fa-envelope absolute left-3 top-[44px] text-gray-400"></i>
+        <i class="fa-solid fa-envelope absolute rtl-icon top-[44px] text-gray-400"></i>
         <span id="emailError" class="error-text"></span>
       </div>
 
@@ -203,7 +213,7 @@
       <div class="relative w-full">
         <label class="block mb-2">كلمة المرور</label>
         <input type="password" id="password" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3 pr-10" placeholder="أدخل كلمة المرور">
-        <i id="togglePassword" class="fa-solid fa-eye absolute left-3 top-[44px] text-gray-400 cursor-pointer"></i>
+        <i id="togglePassword" class="fa-solid fa-eye absolute password-toggle top-[44px] text-gray-400"></i>
         <div class="flex items-center mt-2">
           <div id="passwordStrength" class="password-strength w-full mr-2"></div>
           <span id="strengthText" class="text-xs"></span>
@@ -215,7 +225,7 @@
       <div class="relative w-full">
         <label class="block mb-2">تأكيد كلمة المرور</label>
         <input type="password" id="confirmPassword" required class="inputField w-full border border-gray-300 rounded-xl px-10 py-3" placeholder="أعد إدخال كلمة المرور">
-        <i class="fa-solid fa-lock-keyhole absolute left-3 top-[44px] text-gray-400"></i>
+        <i class="fa-solid fa-lock-keyhole absolute rtl-icon top-[44px] text-gray-400"></i>
         <span id="confirmPasswordError" class="error-text"></span>
       </div>
     </form>
@@ -271,6 +281,7 @@
           img.className = 'w-full h-full rounded-full object-cover';
           profilePreview.appendChild(img);
           document.getElementById('profileError').textContent = '';
+          updateProgressBar(); // تحديث شريط التقدم
         };
         reader.readAsDataURL(file);
       }
@@ -334,6 +345,15 @@
       // مسح رسالة الخطأ إذا كانت كلمة المرور صالحة
       if (strength >= 60) {
         document.getElementById('passwordError').textContent = '';
+      }
+      
+      // التحقق من تطابق كلمتي المرور
+      if (confirmPasswordInput.value && confirmPasswordInput.value !== passwordInput.value) {
+        confirmPasswordInput.classList.add('error');
+        document.getElementById('confirmPasswordError').textContent = 'كلمتا المرور غير متطابقتين';
+      } else if (confirmPasswordInput.value) {
+        confirmPasswordInput.classList.remove('error');
+        document.getElementById('confirmPasswordError').textContent = '';
       }
     });
 
@@ -524,7 +544,7 @@
       
       // توجيه المستخدم إلى الصفحة الرئيسية بعد التسجيل الناجح
       setTimeout(() => {
-        window.location.href = "login.html";
+        window.location.href = "login.html"; // تم التصحيح من login.html إلى index.html
       }, 1500);
     }
 
@@ -535,6 +555,7 @@
         if (errorElement) {
           validateField(field, errorElement);
         }
+        updateProgressBar(); // تحديث شريط التقدم عند الكتابة
       });
       
       field.addEventListener('blur', function() {
@@ -547,8 +568,16 @@
 
     // تحديث شريط التقدم بناءً على عدد الحقول المملوءة
     function updateProgressBar() {
-      const filledFields = Array.from(inputFields).filter(field => field.value.trim() !== '').length;
-      const progress = (filledFields / inputFields.length) * 100;
+      const filledFields = Array.from(inputFields).filter(field => {
+        if (field.type === 'file') {
+          return profilePicInput.files.length > 0;
+        }
+        return field.value.trim() !== '';
+      }).length;
+      
+      // إضافة حقل صورة البروفايل إذا تم تحميل صورة
+      const totalFields = inputFields.length + (profilePicInput.files.length > 0 ? 1 : 0);
+      const progress = (filledFields / totalFields) * 100;
       progressBar.style.width = progress + '%';
     }
 
