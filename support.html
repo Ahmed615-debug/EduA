@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المساعدة والدعم | المدرس الذكي</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen">
+
+  <!-- هيدر أكبر -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-b border-gray-200 dark:border-gray-700">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+      <a href="Secondary.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition">
+        <i class="fa-solid fa-arrow-right"></i>
+        <span>رجوع</span>
+      </a>
+      <h1 class="text-2xl md:text-3xl font-bold">المساعدة والدعم</h1>
+      <button id="toggleDark" class="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold transition">🌙</button>
+    </div>
+  </header>
+
+  <!-- المحتوى -->
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <!-- كارد الأسئلة الشائعة -->
+    <section>
+      <h2 class="text-2xl font-bold text-indigo-600 dark:text-yellow-400 mb-8">❓ الأسئلة الشائعة</h2>
+      
+      <div class="grid md:grid-cols-2 gap-6" id="faq">
+        <!-- مثال سؤال -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>كيف أغير كلمة المرور؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">ادخل على <a href="profile.html" class="text-indigo-500">الملف الشخصي</a> وهتلاقي خيار تغيير كلمة السر.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>هل يوجد وضع ليلي؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">أيوه، من زر القمر في الهيدر أو من الإعدادات.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>إزاي أغير اللغة؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">من صفحة الإعدادات، تقدر تختار عربي أو إنجليزي.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>ليه مش قادر أسجل دخول؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">تأكد من البريد وكلمة السر. لو المشكلة مستمرة جرب إعادة تعيين كلمة السر.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>هل أقدر أستخدم التطبيق على الموبايل؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">طبعًا، متوافق مع الموبايل والتابلت بشكل كامل.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>إزاي أتواصل مع المدرسين؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">من صفحة الدروس اضغط على "تواصل مع المدرس".</p>
+          </div>
+        </div>
+
+        <!-- أسئلة إضافية -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>هل ممكن أسترجع حسابي بعد ما اتحذف؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">للأسف الحسابات المحذوفة نهائيًا ما بتتسترجعش. لكن تقدر تعمل حساب جديد بنفس البريد.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>إزاي أعمل تحديث للتطبيق؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">من متجر جوجل بلاي أو آب ستور تقدر تحدث النسخة لأحدث إصدار.</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+          <button class="w-full text-right p-5 font-bold flex justify-between items-center faq-btn">
+            <span>هل في اشتراكات أو باقات مدفوعة؟</span>
+            <i class="fa-solid fa-chevron-down transition-transform"></i>
+          </button>
+          <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 px-5 text-gray-600 dark:text-gray-300">
+            <p class="pb-4">في نسخة مجانية، وقريب هنضيف باقات بخصائص إضافية.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- تواصل معنا -->
+    <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8 mt-10 text-center">
+      <h3 class="text-xl font-bold mb-6 text-indigo-600 dark:text-yellow-400">📬 محتاج مساعدة إضافية؟</h3>
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="mailto:support@smart-teacher.com" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition flex items-center gap-2">
+          <i class="fa-solid fa-envelope"></i> إيميل الدعم
+        </a>
+        <a href="https://wa.me/201000000000" target="_blank" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold transition flex items-center gap-2">
+          <i class="fa-brands fa-whatsapp"></i> واتساب
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- فوتر -->
+  <footer class="bg-gray-800 text-white text-center py-6 mt-12">
+    <p>© 2025 المدرس الذكي – جميع الحقوق محفوظة</p>
+  </footer>
+
+  <script>
+    // دارك مود
+    const html = document.documentElement;
+    const toggleDark = document.getElementById('toggleDark');
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+    toggleDark?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // أكورديون FAQ
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('i');
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+          icon.classList.remove('rotate-180');
+        } else {
+          document.querySelectorAll('.faq-content').forEach(c => c.style.maxHeight = null);
+          document.querySelectorAll('.faq-btn i').forEach(i => i.classList.remove('rotate-180'));
+          content.style.maxHeight = content.scrollHeight + "px";
+          icon.classList.add('rotate-180');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

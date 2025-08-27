@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المدرس الذكي الافتراضي | الخصوصية والأمان</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans">
+  <!-- شريط علوي -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- زر الرجوع الأزرق -->
+        <button id="backButton" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>رجوع</span>
+        </button>
+        <!-- العنوان في المنتصف -->
+        <h1 class="text-lg md:text-2xl font-bold text-indigo-700 dark:text-yellow-300 text-center flex-grow">إعدادات الخصوصية والأمان</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="toggleDark" class="px-3 py-2 rounded-xl bg-gray-200 dark:bg-gray-700">
+          🌙
+        </button>
+        <!-- زر اختيار اللغة -->
+        <select id="languageSelect" class="px-3 py-2 rounded-xl bg-gray-200 dark:bg-gray-700">
+          <option value="ar">العربية</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 md:px-6 py-8 space-y-8">
+    <!-- بطاقة: ملخص سريع -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <div class="flex items-center justify-between">
+          <h2 class="font-bold text-indigo-700 dark:text-yellow-300">حالة الأمان</h2>
+          <i class="fa-solid fa-shield-halved text-green-500"></i>
+        </div>
+        <p id="securityScoreText" class="mt-3 text-sm text-gray-600 dark:text-gray-300">يتم التحديث…</p>
+      </div>
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <div class="flex items-center justify-between">
+          <h2 class="font-bold text-indigo-700 dark:text-yellow-300">المصادقة الثنائية (2FA)</h2>
+          <i class="fa-solid fa-key"></i>
+        </div>
+        <div class="mt-4 flex items-center justify-between">
+          <span class="text-sm">تفعيل 2FA عبر البريد</span>
+          <label class="inline-flex items-center cursor-pointer">
+            <input id="twoFA" type="checkbox" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:bg-indigo-600 relative after:content-[''] after:absolute after:top-0.5 after:start-0.5 after:bg-white after:h-5 after:w-5 after:rounded-full after:transition-all peer-checked:translate-x-5"></div>
+          </label>
+        </div>
+      </div>
+      <div class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+        <div class="flex items-center justify-between">
+          <h2 class="font-bold text-indigo-700 dark:text-yellow-300">ظهور الحساب</h2>
+          <i class="fa-solid fa-eye"></i>
+        </div>
+        <div class="mt-4 space-y-3">
+          <label class="flex items-center justify-between">
+            <span class="text-sm">إظهار البريد للمعلّمين فقط</span>
+            <input id="showEmailToTeachers" type="checkbox" class="toggle-checkbox">
+          </label>
+          <label class="flex items-center justify-between">
+            <span class="text-sm">إخفاء رقم الهاتف عن الجميع</span>
+            <input id="hidePhone" type="checkbox" class="toggle-checkbox">
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- كلمة المرور -->
+    <section class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+      <h3 class="text-lg font-bold text-indigo-700 dark:text-yellow-300 flex items-center gap-2">
+        <i class="fa-solid fa-lock"></i> تغيير كلمة المرور
+      </h3>
+      <form id="passwordForm" class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div>
+          <label class="text-sm">كلمة المرور الحالية</label>
+          <input type="password" id="currentPassword" class="mt-1 w-full rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-3 py-2" required>
+        </div>
+        <div>
+          <label class="text-sm">كلمة المرور الجديدة</label>
+          <input type="password" id="newPassword" class="mt-1 w-full rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-3 py-2" required>
+          <p id="pwdStrength" class="text-xs mt-1 text-gray-500">القوة: —</p>
+        </div>
+        <div>
+          <label class="text-sm">تأكيد كلمة المرور</label>
+          <input type="password" id="confirmPassword" class="mt-1 w-full rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-3 py-2" required>
+        </div>
+        <div class="md:col-span-3 flex items-center justify-end gap-3 mt-2">
+          <button type="reset" class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-700">إلغاء</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">حفظ</button>
+        </div>
+      </form>
+      <p id="passwordMsg" class="text-sm mt-3"></p>
+    </section>
+
+    <!-- الجلسات والأجهزة -->
+    <section class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+      <h3 class="text-lg font-bold text-indigo-700 dark:text-yellow-300 flex items-center gap-2">
+        <i class="fa-solid fa-computer"></i> الجلسات النشطة والأجهزة
+      </h3>
+      <div class="mt-4">
+        <div id="sessionsList" class="space-y-3"></div>
+        <div class="flex items-center justify-end mt-4 gap-3">
+          <button id="refreshSessions" class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-700">تحديث</button>
+          <button id="logoutAll" class="px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600">تسجيل الخروج من كل الأجهزة</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- إدارة البيانات والخصوصية -->
+    <section class="p-6 rounded-2xl bg-white dark:bg-gray-800 shadow">
+      <h3 class="text-lg font-bold text-indigo-700 dark:text-yellow-300 flex items-center gap-2">
+        <i class="fa-solid fa-user-shield"></i> عناصر الخصوصية
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+        <div class="space-y-3">
+          <label class="flex items-center justify-between">
+            <span class="text-sm">السماح بفهرسة الحساب في البحث داخل المنصة</span>
+            <input id="searchIndexing" type="checkbox" class="toggle-checkbox">
+          </label>
+          <label class="flex items-center justify-between">
+            <span class="text-sm">تخصيص المحتوى بناءً على الاستخدام (بدون إعلانات)</span>
+            <input id="contentPersonalization" type="checkbox" class="toggle-checkbox">
+          </label>
+          <label class="flex items-center justify-between">
+            <span class="text-sm">استلام رسائل بريدية عن التحديثات</span>
+            <input id="emailUpdates" type="checkbox" class="toggle-checkbox">
+          </label>
+        </div>
+        <div class="space-y-3">
+          <label class="flex items-center justify-between">
+            <span class="text-sm">السماح بالإشعارات داخل المتصفح</span>
+            <input id="browserNotifications" type="checkbox" class="toggle-checkbox">
+          </label>
+          <div class="text-xs text-gray-500 dark:text-gray-400">قد يطلب المتصفح منك الإذن عند التفعيل.</div>
+          <div class="flex items-center gap-3 mt-4">
+            <button id="downloadData" class="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700">
+              <i class="fa-solid fa-download"></i> تنزيل بياناتي
+            </button>
+            <button id="clearHistory" class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-700">
+              <i class="fa-solid fa-broom"></i> مسح سجلّ التعلم
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+        <h4 class="font-bold text-red-600 dark:text-red-400 mb-2"><i class="fa-solid fa-triangle-exclamation"></i> حذف الحساب</h4>
+        <p class="text-sm mb-3">هذا الإجراء لا يمكن التراجع عنه، سيتم حذف بياناتك المخزنة محليًا من هذا الجهاز.</p>
+        <div class="flex items-center gap-3">
+          <input id="deleteConfirm" type="text" placeholder="اكتب: حذف" class="px-3 py-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700">
+          <button id="deleteAccount" class="px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600">حذف الحساب</button>
+        </div>
+        <p id="deleteMsg" class="text-sm mt-2"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- فوتر -->
+  <footer class="text-center text-xs text-gray-500 py-6">
+    © 2025 المدرس الذكي الافتراضي – سياسة الخصوصية وإعدادات الأمان
+  </footer>
+
+  <!-- أنماط بسيطة للمفاتيح -->
+  <style>
+    .toggle-checkbox { width: 44px; height: 24px; appearance: none; background: #e5e7eb; border-radius: 9999px; position: relative; outline: none; transition: .2s; }
+    .toggle-checkbox:checked { background: #6366f1; }
+    .toggle-checkbox::after { content: ""; position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; background: #fff; border-radius: 9999px; transition: .2s; }
+    .toggle-checkbox:checked::after { transform: translateX(-20px); }
+  </style>
+
+  <!-- سكربت الصفحة -->
+  <script>
+    const html = document.documentElement;
+    const toggleDark = document.getElementById('toggleDark');
+    const languageSelect = document.getElementById('languageSelect');
+    const backButton = document.getElementById('backButton');
+
+    // استرجاع الصفحة السابقة من التخزين المحلي
+    const previousPage = localStorage.getItem('previousPage') || 'Secondary.html';
+
+    // تفعيل الوضع الليلي حسب التخزين المحلي
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+    toggleDark.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // تذكر اللغة المختارة مسبقاً
+    const savedLanguage = localStorage.getItem('language') || 'ar';
+    languageSelect.value = savedLanguage;
+    
+    languageSelect.addEventListener('change', () => {
+      const selectedLanguage = languageSelect.value;
+      localStorage.setItem('language', selectedLanguage);
+      
+      // إعادة تحميل الصفحة مع تغيير اللغة
+      window.location.reload();
+    });
+
+    // زر الرجوع - العودة للصفحة السابقة
+    backButton.addEventListener('click', () => {
+      window.location.href = previousPage;
+    });
+
+    // تحميل المستخدم والإعدادات
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const userIndex = users.findIndex(u => u.id === currentUser.id);
+    const userObj = userIndex > -1 ? users[userIndex] : currentUser;
+
+    // ضمان وجود مسارات التخزين
+    userObj.security = userObj.security || { twoFA: false, sessions: [] };
+    userObj.privacy  = userObj.privacy  || {
+      showEmailToTeachers: true,
+      hidePhone: true,
+      searchIndexing: true,
+      contentPersonalization: false,
+      emailUpdates: true,
+      browserNotifications: false
+    };
+
+    // عناصر DOM
+    const twoFA = document.getElementById('twoFA');
+    const showEmailToTeachers = document.getElementById('showEmailToTeachers');
+    const hidePhone = document.getElementById('hidePhone');
+    const searchIndexing = document.getElementById('searchIndexing');
+    const contentPersonalization = document.getElementById('contentPersonalization');
+    const emailUpdates = document.getElementById('emailUpdates');
+    const browserNotifications = document.getElementById('browserNotifications');
+    const securityScoreText = document.getElementById('securityScoreText');
+
+    const passwordForm = document.getElementById('passwordForm');
+    const currentPassword = document.getElementById('currentPassword');
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const pwdStrength = document.getElementById('pwdStrength');
+    const passwordMsg = document.getElementById('passwordMsg');
+
+    const sessionsList = document.getElementById('sessionsList');
+    const refreshSessions = document.getElementById('refreshSessions');
+    const logoutAll = document.getElementById('logoutAll');
+
+    const downloadData = document.getElementById('downloadData');
+    const clearHistory = document.getElementById('clearHistory');
+    const deleteConfirm = document.getElementById('deleteConfirm');
+    const deleteAccount = document.getElementById('deleteAccount');
+    const deleteMsg = document.getElementById('deleteMsg');
+
+    // ترجمة النصوص حسب اللغة
+    function translatePage(lang) {
+      const translations = {
+        ar: {
+          title: "إعدادات الخصوصية والأمان",
+          back: "رجوع",
+          securityStatus: "حالة الأمان",
+          twoFA: "المصادقة الثنائية (2FA)",
+          accountVisibility: "ظهور الحساب",
+          changePassword: "تغيير كلمة المرور",
+          currentPassword: "كلمة المرور الحالية",
+          newPassword: "كلمة المرور الجديدة",
+          confirmPassword: "تأكيد كلمة المرور",
+          cancel: "إلغاء",
+          save: "حفظ",
+          strength: "القوة",
+          sessions: "الجلسات النشطة والأجهزة",
+          refresh: "تحديث",
+          logoutAll: "تسجيل الخروج من كل الأجهزة",
+          privacyElements: "عناصر الخصوصية",
+          downloadData: "تنزيل بياناتي",
+          clearHistory: "مسح سجلّ التعلم",
+          deleteAccount: "حذف الحساب",
+          deleteConfirmText: "اكتب: حذف"
+        },
+        en: {
+          title: "Privacy & Security Settings",
+          back: "Back",
+          securityStatus: "Security Status",
+          twoFA: "Two-Factor Authentication (2FA)",
+          accountVisibility: "Account Visibility",
+          changePassword: "Change Password",
+          currentPassword: "Current Password",
+          newPassword: "New Password",
+          confirmPassword: "Confirm Password",
+          cancel: "Cancel",
+          save: "Save",
+          strength: "Strength",
+          sessions: "Active Sessions & Devices",
+          refresh: "Refresh",
+          logoutAll: "Logout from All Devices",
+          privacyElements: "Privacy Elements",
+          downloadData: "Download My Data",
+          clearHistory: "Clear Learning History",
+          deleteAccount: "Delete Account",
+          deleteConfirmText: "Type: delete"
+        }
+      };
+
+      const t = translations[lang];
+      
+      // تحديث النصوص
+      document.querySelector('h1').textContent = t.title;
+      document.querySelector('#backButton span').textContent = t.back;
+      document.querySelectorAll('h2')[0].textContent = t.securityStatus;
+      document.querySelectorAll('h2')[1].textContent = t.twoFA;
+      document.querySelectorAll('h2')[2].textContent = t.accountVisibility;
+      document.querySelectorAll('h3')[0].innerHTML = `<i class="fa-solid fa-lock"></i> ${t.changePassword}`;
+      document.querySelector('label[for="currentPassword"]').textContent = t.currentPassword;
+      document.querySelector('label[for="newPassword"]').textContent = t.newPassword;
+      document.querySelector('label[for="confirmPassword"]').textContent = t.confirmPassword;
+      document.querySelector('button[type="reset"]').textContent = t.cancel;
+      document.querySelector('button[type="submit"]').textContent = t.save;
+      document.querySelectorAll('h3')[1].innerHTML = `<i class="fa-solid fa-computer"></i> ${t.sessions}`;
+      document.querySelector('#refreshSessions').textContent = t.refresh;
+      document.querySelector('#logoutAll').textContent = t.logoutAll;
+      document.querySelectorAll('h3')[2].innerHTML = `<i class="fa-solid fa-user-shield"></i> ${t.privacyElements}`;
+      document.querySelector('#downloadData').innerHTML = `<i class="fa-solid fa-download"></i> ${t.downloadData}`;
+      document.querySelector('#clearHistory').innerHTML = `<i class="fa-solid fa-broom"></i> ${t.clearHistory}`;
+      document.querySelector('#deleteAccount').textContent = t.deleteAccount;
+      document.querySelector('#deleteConfirm').placeholder = t.deleteConfirmText;
+      
+      // تحديث النصوص الديناميكية
+      if (pwdStrength) pwdStrength.textContent = pwdStrength.textContent.replace('القوة', t.strength);
+    }
+
+    // تطبيق اللغة عند تحميل الصفحة
+    if (savedLanguage === 'en') {
+      translatePage('en');
+      document.documentElement.setAttribute('dir', 'ltr');
+      document.documentElement.setAttribute('lang', 'en');
+    }
+
+    // ربط القيم الحالية
+    function hydrateUI() {
+      twoFA.checked = !!userObj.security.twoFA;
+      showEmailToTeachers.checked = !!userObj.privacy.showEmailToTeachers;
+      hidePhone.checked = !!userObj.privacy.hidePhone;
+      searchIndexing.checked = !!userObj.privacy.searchIndexing;
+      contentPersonalization.checked = !!userObj.privacy.contentPersonalization;
+      emailUpdates.checked = !!userObj.privacy.emailUpdates;
+      browserNotifications.checked = !!userObj.privacy.browserNotifications;
+      updateSecurityScore();
+      renderSessions();
+    }
+
+    // حفظ عام
+    function persist() {
+      if (userIndex > -1) {
+        users[userIndex] = userObj;
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      // تحديث currentUser أيضًا للتماسك داخل الموقع
+      localStorage.setItem('currentUser', JSON.stringify(Object.assign({}, currentUser, { security: userObj.security, privacy: userObj.privacy })));
+    }
+
+    // حساب درجة الأمان البسيطة
+    function updateSecurityScore() {
+      let score = 0;
+      if (userObj.security.twoFA) score += 40;
+      if ((userObj.password || '').length >= 10) score += 30; // إن وُجدت كلمة مرور مخزنة
+      if (userObj.privacy.hidePhone) score += 15;
+      if (!userObj.privacy.searchIndexing) score += 15;
+      
+      const isArabic = localStorage.getItem('language') !== 'en';
+      const level = isArabic 
+        ? (score >= 80 ? 'ممتاز' : score >= 60 ? 'جيد' : score >= 40 ? 'متوسط' : 'ضعيف')
+        : (score >= 80 ? 'Excellent' : score >= 60 ? 'Good' : score >= 40 ? 'Average' : 'Weak');
+      
+      securityScoreText.textContent = isArabic
+        ? `درجة الأمان: ${score}/100 — ${level}`
+        : `Security Score: ${score}/100 — ${level}`;
+    }
+
+    // مراقبة مفاتيح الخصوصية
+    [
+      [twoFA, v => userObj.security.twoFA = v],
+      [showEmailToTeachers, v => userObj.privacy.showEmailToTeachers = v],
+      [hidePhone, v => userObj.privacy.hidePhone = v],
+      [searchIndexing, v => userObj.privacy.searchIndexing = v],
+      [contentPersonalization, v => userObj.privacy.contentPersonalization = v],
+      [emailUpdates, v => userObj.privacy.emailUpdates = v],
+      [browserNotifications, async (v) => {
+        userObj.privacy.browserNotifications = v;
+        if (v && 'Notification' in window) {
+          try {
+            const perm = await Notification.requestPermission();
+            if (perm !== 'granted') {
+              userObj.privacy.browserNotifications = false;
+              browserNotifications.checked = false;
+              alert(localStorage.getItem('language') === 'en' 
+                ? 'Browser notifications permission was not granted.' 
+                : 'لم يتم منح إذن الإشعارات من المتصفح.');
+            }
+          } catch(e) { /* تجاهل */ }
+        }
+      }]
+    ].forEach(([el, set]) => {
+      el.addEventListener('change', () => { set(el.checked); persist(); updateSecurityScore(); });
+    });
+
+    // قوة كلمة المرور
+    function strength(txt) {
+      let s = 0;
+      if (txt.length >= 8) s += 1;
+      if (/[A-Zء-ي]/.test(txt)) s += 1; // أحرف كبيرة/عربية
+      if (/[a-z]/.test(txt)) s += 1;
+      if (/\d/.test(txt)) s += 1;
+      if (/[^A-Za-z0-9]/.test(txt)) s += 1;
+      return s; // 0..5
+    }
+
+    newPassword.addEventListener('input', () => {
+      const s = strength(newPassword.value);
+      const isArabic = localStorage.getItem('language') !== 'en';
+      const labels = isArabic 
+        ? ['ضعيفة جدًا','ضعيفة','متوسطة','جيدة','قوية']
+        : ['Very Weak','Weak','Medium','Good','Strong'];
+      pwdStrength.textContent = `${isArabic ? 'القوة' : 'Strength'}: ${labels[Math.max(0, s-1)] || '—'}`;
+    });
+
+    passwordForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      passwordMsg.textContent = '';
+
+      const isArabic = localStorage.getItem('language') !== 'en';
+      const currentOk = !userObj.password || currentPassword.value === userObj.password;
+      
+      if (!currentOk) {
+        passwordMsg.className = 'text-sm mt-3 text-red-600';
+        passwordMsg.textContent = isArabic 
+          ? 'كلمة المرور الحالية غير صحيحة.' 
+          : 'Current password is incorrect.';
+        return;
+      }
+      
+      if (newPassword.value !== confirmPassword.value) {
+        passwordMsg.className = 'text-sm mt-3 text-red-600';
+        passwordMsg.textContent = isArabic 
+          ? 'تأكيد كلمة المرور غير متطابق.' 
+          : 'Password confirmation does not match.';
+        return;
+      }
+      
+      if (strength(newPassword.value) < 3) {
+        passwordMsg.className = 'text-sm mt-3 text-red-600';
+        passwordMsg.textContent = isArabic 
+          ? 'اختر كلمة مرور أقوى (طول 8+ مع أرقام ورمز).' 
+          : 'Choose a stronger password (8+ length with numbers and symbols).';
+        return;
+      }
+      
+      // حفظ كلمة المرور الجديدة بدلاً من القديمة
+      userObj.password = newPassword.value;
+      persist();
+      passwordForm.reset();
+      
+      pwdStrength.textContent = isArabic ? 'القوة: —' : 'Strength: —';
+      passwordMsg.className = 'text-sm mt-3 text-green-600';
+      passwordMsg.textContent = isArabic 
+        ? 'تم تحديث كلمة المرور بنجاح. سيتم توجيهك إلى صفحة تسجيل الدخول خلال 3 ثوانٍ.' 
+        : 'Password updated successfully. You will be redirected to the login page in 3 seconds.';
+      
+      updateSecurityScore();
+      
+      // إعادة توجيه المستخدم لتسجيل الدخول بعد تغيير كلمة المرور
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 3000);
+    });
+
+    // جلسات (نخزن جلسة المتصفح الحالي فقط كمثال)
+    function getDeviceLabel() {
+      const ua = navigator.userAgent;
+      let os = /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'macOS' : /Android/.test(ua) ? 'Android' : /iPhone|iPad/.test(ua) ? 'iOS' : 'Other';
+      let browser = /Chrome\//.test(ua) ? 'Chrome' : /Firefox\//.test(ua) ? 'Firefox' : /Safari\//.test(ua) ? 'Safari' : 'Browser';
+      return `${os} · ${browser}`;
+    }
+
+    function ensureCurrentSession() {
+      if (!Array.isArray(userObj.security.sessions)) userObj.security.sessions = [];
+      const sid = localStorage.getItem('sessionId') || Math.random().toString(36).slice(2);
+      localStorage.setItem('sessionId', sid);
+      const idx = userObj.security.sessions.findIndex(s => s.id === sid);
+      const now = new Date().toISOString();
+      if (idx === -1) {
+        userObj.security.sessions.push({ id: sid, device: getDeviceLabel(), lastActive: now, thisDevice: true });
+      } else {
+        userObj.security.sessions[idx].lastActive = now;
+        userObj.security.sessions[idx].thisDevice = true;
+      }
+      persist();
+    }
+
+    function renderSessions() {
+      sessionsList.innerHTML = '';
+      const isArabic = localStorage.getItem('language') !== 'en';
+      
+      (userObj.security.sessions || []).slice().reverse().forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'p-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 flex items-center justify-between';
+        row.innerHTML = `
+          <div>
+            <div class="font-bold ${s.thisDevice ? 'text-green-600' : ''}">${s.device}${s.thisDevice ? ` (${isArabic ? 'هذا الجهاز' : 'This Device'})` : ''}</div>
+            <div class="text-xs text-gray-500">${isArabic ? 'آخر نشاط:' : 'Last Activity:'} ${new Date(s.lastActive).toLocaleString(isArabic ? 'ar-EG' : 'en-US')}</div>
+          </div>
+          <button class="px-3 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600" data-id="${s.id}">${isArabic ? 'إنهاء' : 'End'}</button>
+        `;
+        row.querySelector('button').addEventListener('click', () => {
+          userObj.security.sessions = userObj.security.sessions.filter(x => x.id !== s.id);
+          persist();
+          renderSessions();
+        });
+        sessionsList.appendChild(row);
+      });
+      
+      if (!sessionsList.children.length) {
+        sessionsList.innerHTML = `<div class="text-sm text-gray-500">${isArabic ? 'لا توجد جلسات نشطة.' : 'No active sessions.'}</div>`;
+      }
+    }
+
+    refreshSessions.addEventListener('click', () => { ensureCurrentSession(); renderSessions(); });
+    
+    logoutAll.addEventListener('click', () => {
+      const isArabic = localStorage.getItem('language') !== 'en';
+      userObj.security.sessions = [];
+      persist();
+      renderSessions();
+      alert(isArabic 
+        ? 'تم تسجيل الخروج من جميع الجلسات على هذا الحساب محليًا.' 
+        : 'Logged out from all sessions on this account locally.');
+    });
+
+    // تنزيل البيانات كملف JSON
+    downloadData.addEventListener('click', () => {
+      const data = {
+        profile: { id: userObj.id, fullName: userObj.fullName, email: userObj.email, phone: userObj.phone },
+        privacy: userObj.privacy,
+        security: { twoFA: userObj.security.twoFA, sessions: userObj.security.sessions?.length || 0 },
+        // يمكنك إضافة أي أقسام أخرى مخزّنة
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'my-data.json'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // مسح السجل (مثال لمسح تقدم وهمي)
+    clearHistory.addEventListener('click', () => {
+      const isArabic = localStorage.getItem('language') !== 'en';
+      if (!confirm(isArabic 
+          ? 'هل أنت متأكد من مسح سجلّ التعلم على هذا الجهاز؟' 
+          : 'Are you sure you want to clear learning history on this device?')) return;
+      
+      userObj.learningHistory = [];
+      persist();
+      alert(isArabic 
+        ? 'تم مسح سجلّ التعلم المحلي.' 
+        : 'Learning history has been cleared locally.');
+    });
+
+    // حذف الحساب (محليًا)
+    deleteAccount.addEventListener('click', () => {
+      const isArabic = localStorage.getItem('language') !== 'en';
+      const confirmText = isArabic ? 'حذف' : 'delete';
+      
+      if (deleteConfirm.value.trim() !== confirmText) {
+        deleteMsg.className = 'text-sm mt-2 text-red-600';
+        deleteMsg.textContent = isArabic 
+          ? `الرجاء كتابة كلمة "${confirmText}" للتأكيد.` 
+          : `Please type "${confirmText}" to confirm.`;
+        return;
+      }
+      
+      if (!confirm(isArabic 
+          ? 'تأكيد نهائي: سيتم حذف بياناتك من هذا المتصفح فقط. متابعة؟' 
+          : 'Final confirmation: Your data will be deleted from this browser only. Continue?')) return;
+
+      // إزالة من قائمة المستخدمين إن وجد
+      if (userIndex > -1) {
+        users.splice(userIndex, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('sessionId');
+
+      deleteMsg.className = 'text-sm mt-2 text-green-600';
+      deleteMsg.textContent = isArabic 
+        ? 'تم حذف الحساب المحلي. سيتم تحويلك لصفحة الدخول.' 
+        : 'Account deleted locally. You will be redirected to the login page.';
+      
+      setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+    });
+
+    // بدء التشغيل
+    ensureCurrentSession();
+    hydrateUI();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>
