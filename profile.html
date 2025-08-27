@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الملف الشخصي | المدرس الذكي</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen">
+  
+  <!-- هيدر بسيط -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur border-b border-gray-200 dark:border-gray-700">
+  <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+    
+    <!-- زر الرجوع -->
+    <a href="Secondary.html" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition">
+      <i class="fa-solid fa-arrow-right"></i>
+      <span>رجوع</span>
+    </a>
+
+    <!-- العنوان في النص -->
+    <h1 class="text-xl md:text-2xl font-bold text-center dark:text-yellow-500">إعدادات الملف الشخصي</h1>
+
+    <!-- زر الوضع الليلي -->
+    <button id="toggleDark" class="px-3 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold transition">🌙</button>
+  </div>
+</header>
+
+  <main class="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-12">
+    <!-- بطاقة البروفايل -->
+    <section class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+        <!-- صورة البروفايل -->
+        <div class="flex flex-col items-center">
+          <img id="avatarPreview" src="https://i.postimg.cc/8zYk5C8c/user-icon.png" alt="صورة البروفايل" class="w-28 h-28 rounded-full object-cover ring-4 ring-indigo-100 dark:ring-gray-700 shadow"/>
+          <div class="mt-4 flex items-center gap-3">
+            <label for="avatarInput" class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition">
+              <i class="fa-solid fa-image"></i>
+              <span>تغيير الصورة</span>
+            </label>
+            <button id="removeAvatar" class="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">إزالة</button>
+          </div>
+          <input id="avatarInput" type="file" accept="image/*" class="hidden" />
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 ">الحد الأقصى الموصى به 2MB (سيتم حفظها محليًا)</p>
+        </div>
+
+        <!-- نموذج البيانات -->
+        <form id="profileForm" class="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
+          <div>
+            <label class="block mb-2 text-sm ">الاسم الكامل</label>
+            <input id="fullName" type="text" class="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="مثال: أحمد محمد" />
+          </div>
+          <div>
+            <label class="block mb-2 text-sm ">اسم المستخدم (User Name)</label>
+            <input id="username" type="text" class="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="مثال: ahmed_user" />
+          </div>
+          <div>
+            <label class="block mb-2 text-sm ">البريد الإلكتروني</label>
+            <input id="email" type="email" class="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="example@mail.com" />
+          </div>
+          <div>
+            <label class="block mb-2 text-sm ">رقم الهاتف</label>
+            <input id="phone" type="tel" class="w-full px-4 py-3 rounded-xl bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 " placeholder="01XXXXXXXXX" />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block mb-2 text-sm ">المرحلة الدراسية</label>
+            <div class="grid grid-cols-2 gap-4">
+              <label class="flex items-center gap-3 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 cursor-pointer dark:text-yellow-400">
+                <input type="radio" name="stage" value="prep" class="accent-indigo-600" />
+                <span>المرحلة الإعدادية</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 cursor-pointer dark:text-yellow-400">
+                <input type="radio" name="stage" value="secondary" class="accent-indigo-600" />
+                <span>المرحلة الثانوية</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="md:col-span-2 flex items-center justify-between mt-2">
+            <div class="text-sm text-gray-500 dark:text-gray-400" id="saveStatus"></div>
+            <div class="flex gap-3">
+              <button type="button" id="resetBtn" class="px-5 py-3 rounded-xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">إلغاء التغييرات</button>
+              <button type="submit" class="px-6 py-3 rounded-xl bg-green-600 text-white hover:bg-green-700 transition font-bold">حفظ</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- تلميحات -->
+    <section class="mt-8 text-sm text-gray-600 dark:text-gray-300">
+      <ul class="list-disc list-inside space-y-2 bg-white dark:bg-gray-800 rounded-2xl p-5 ">
+        <li>يتم حفظ جميع التغييرات في <span class="font-bold">LocalStorage</span> على جهازك.</li>
+        <li>إذا كنت تستخدم عدة حسابات، سيتم التحديث أيضًا داخل قائمة المستخدمين <code>users[]</code> باستخدام نفس <span class="font-bold">id</span>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- توست إشعار -->
+  <div id="toast" class="fixed bottom-6 right-6 md:right-auto md:left-6 hidden px-4 py-3 rounded-xl shadow-lg bg-green-600 text-white"></div>
+
+  <script>
+    // عناصر DOM
+    const html = document.documentElement;
+    const toggleDark = document.getElementById('toggleDark');
+
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarInput = document.getElementById('avatarInput');
+    const removeAvatar = document.getElementById('removeAvatar');
+
+    const profileForm = document.getElementById('profileForm');
+    const fullNameEl = document.getElementById('fullName');
+    const usernameEl = document.getElementById('username');
+    const emailEl = document.getElementById('email');
+    const phoneEl = document.getElementById('phone');
+    const saveStatus = document.getElementById('saveStatus');
+    const resetBtn = document.getElementById('resetBtn');
+    const toast = document.getElementById('toast');
+
+    // الثيم
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+    toggleDark?.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // أدوات التخزين
+    function getCurrentUser() {
+      return JSON.parse(localStorage.getItem('currentUser') || '{}');
+    }
+    function setCurrentUser(obj) {
+      localStorage.setItem('currentUser', JSON.stringify(obj));
+    }
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('users') || '[]');
+    }
+    function setUsers(arr) {
+      localStorage.setItem('users', JSON.stringify(arr));
+    }
+
+    // التحقق من تسجيل الدخول
+    function checkLoginStatus() {
+      const cu = getCurrentUser();
+      if (!cu || !cu.isLoggedIn) {
+        window.location.href = 'login.html';
+      }
+    }
+    checkLoginStatus();
+
+    // تحميل بيانات المستخدم إلى النموذج
+    let loadedUser = null;
+    function loadToForm() {
+      const cu = getCurrentUser();
+      const users = getUsers();
+      const userData = users.find(u => u.id === cu.id) || cu || {};
+      loadedUser = {...userData};
+
+      // تعبئة الحقول
+      avatarPreview.src = userData.profileImage || 'https://i.postimg.cc/8zYk5C8c/user-icon.png';
+      fullNameEl.value = userData.fullName || '';
+      usernameEl.value = userData.username || userData.userName || userData.email?.split('@')[0] || '';
+      emailEl.value = userData.email || '';
+      phoneEl.value = userData.phone || '';
+      const stage = userData.stage || (userData.gradeStage) || 'secondary';
+      const stageInput = document.querySelector(input[name="stage"][value="${stage}"]);
+      if (stageInput) stageInput.checked = true; else {
+        document.querySelector('input[name="stage"][value="secondary"]').checked = true;
+      }
+
+      saveStatus.textContent = '';
+    }
+
+    // معالجة صورة الملف الشخصي
+    let tempAvatarData = null;
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { // 2MB
+        showToast('حجم الصورة كبير، يُفضل أقل من 2MB');
+        avatarInput.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        tempAvatarData = reader.result;
+        avatarPreview.src = tempAvatarData;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    removeAvatar.addEventListener('click', () => {
+      tempAvatarData = null;
+      avatarPreview.src = 'https://i.postimg.cc/8zYk5C8c/user-icon.png';
+    });
+
+     // حفظ البيانات
+  profileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // تحقق بسيط
+    const emailVal = emailEl.value.trim();
+    if (emailVal && !/^\S+@\S+\.\S+$/.test(emailVal)) {
+      showToast('من فضلك أدخل بريدًا إلكترونيًا صحيحًا');
+      return;
+    }
+
+    const cu = getCurrentUser();
+    const users = getUsers();
+
+    const selectedStage = (document.querySelector('input[name="stage"]:checked')?.value) || 'secondary';
+
+    const updates = {
+      profileImage: tempAvatarData !== null ? tempAvatarData : (avatarPreview.src || loadedUser?.profileImage),
+      fullName: fullNameEl.value.trim(),
+      username: (usernameEl.value || '').trim(),
+      email: emailEl.value.trim(),
+      phone: phoneEl.value.trim(),
+      stage: selectedStage
+    };
+
+    // تحديث currentUser
+    const newCurrent = { ...cu, ...updates };
+    setCurrentUser(newCurrent);
+
+    // تحديث داخل users[] لو موجود
+    const idx = users.findIndex(u => u.id === cu.id);
+    if (idx !== -1) {
+      users[idx] = { ...users[idx], ...updates };
+      setUsers(users);
+    }
+
+    showToast('تم حفظ التغييرات بنجاح ✅');
+    saveStatus.textContent = 'آخر حفظ: الآن';
+    tempAvatarData = null;
+
+    // بعد الحفظ → تحويل حسب المرحلة
+    setTimeout(() => {
+      if (selectedStage === "prep") {
+        window.location.href = "prep.html"; // صفحة المرحلة الإعدادية
+      } else if (selectedStage === "secondary") {
+        window.location.href = "secondary.html"; // صفحة المرحلة الثانوية
+      }
+    }, 1000); // استنى ثانية عشان التوست يبان الأول
+  });
+
+    // إعادة القيم الأصلية
+    resetBtn.addEventListener('click', () => {
+      tempAvatarData = null;
+      loadToForm();
+      showToast('تم إلغاء التغييرات');
+    });
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.style.opacity = '1';
+      setTimeout(() => { toast.style.opacity = '0'; }, 1800);
+      setTimeout(() => { toast.classList.add('hidden'); }, 2200);
+    }
+
+    // تحميل أولي
+    document.addEventListener('DOMContentLoaded', loadToForm);
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>
